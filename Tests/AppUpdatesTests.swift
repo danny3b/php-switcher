@@ -74,14 +74,14 @@ import Sparkle
         var informationalChoices: [SPUUserUpdateChoice] = []
         information.receiveUpdate(version: "2.0.0", stage: .notDownloaded, informationOnly: true) { informationalChoices.append($0) }
         check(informationalChoices == [.dismiss] && information.error != nil, "Informational releases are not passed to the installer")
-        let noUpdate = NSError(domain: SUSparkleErrorDomain, code: SUError.noUpdateError.rawValue,
+        let noUpdate = NSError(domain: SUSparkleErrorDomain, code: Int(SUError.noUpdateError.rawValue),
                                userInfo: [SPUNoUpdateFoundReasonKey: NSNumber(value: SPUNoUpdateFoundReason.onLatestVersion.rawValue)])
         information.showUpdateNotFoundWithError(noUpdate, acknowledgement: {})
         check(information.phase == .upToDate && information.lastChecked != nil, "A successful latest-version check records its timestamp")
         let lastSuccess = information.lastChecked
         information.showUpdaterError(NSError(domain: NSURLErrorDomain, code: NSURLErrorNotConnectedToInternet), acknowledgement: {})
         check(information.phase == .failed && information.lastChecked == lastSuccess, "Offline errors preserve the last successful check without reporting up to date")
-        information.showUpdateNotFoundWithError(NSError(domain: SUSparkleErrorDomain, code: SUError.noUpdateError.rawValue,
+        information.showUpdateNotFoundWithError(NSError(domain: SUSparkleErrorDomain, code: Int(SUError.noUpdateError.rawValue),
                                                         userInfo: [NSLocalizedDescriptionKey: "A newer macOS version is required."]), acknowledgement: {})
         check(information.phase == .failed, "An incompatible release is not misreported as up to date")
         print("All \(count) app update checks passed.")

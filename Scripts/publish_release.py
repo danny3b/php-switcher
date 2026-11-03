@@ -15,6 +15,7 @@ import subprocess
 import sys
 from urllib.parse import quote
 import xml.etree.ElementTree as ET
+import zipfile
 
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY = "danny3b/php-switcher"
@@ -81,8 +82,20 @@ def validate_artifacts(directory, version, build, public_key):
     signature = enclosure.get(namespace + "edSignature")
     if not signature:
         raise RuntimeError("The archive has no EdDSA signature.")
+    with zipfile.ZipFile(archive) as package:
+        metadata = plistlib.loads(package.read("PHP Switcher.app/Contents/Info.plist"))
+    if (metadata.get("CFBundleIdentifier") != "pl.daniel.php-switcher"
+            or metadata.get("CFBundleVersion") != str(build)
+            or metadata.get("CFBundleShortVersionString") != version
+            or metadata.get("SUPublicEDKey") != public_key):
+        raise RuntimeError("The archived app does not match the release metadata or signing key.")
     verifier = ROOT / "build/dependencies/Sparkle-2.10.1/bin/sign_update"
-    subprocess.run([str(verifier), "--verify", str(archive), signature, "-p", public_key], check=True)
+    key_tool = verifier.with_name("generate_keys")
+    actual_key = subprocess.check_output([str(key_tool), "--account", "pl.daniel.php-switcher", "-p"], text=True).strip()
+    if actual_key != public_key:
+        raise RuntimeError("The signing key in Keychain does not match the embedded public key.")
+    subprocess.run([str(verifier), "--account", "pl.daniel.php-switcher", "--verify", str(archive), signature], check=True)
+    subprocess.run([str(verifier), "--account", "pl.daniel.php-switcher", "--verify", str(feed)], check=True)
     return [archive, feed, sums]
 
 
@@ -102,6 +115,8 @@ def main():
     if not remote or remote[0] != revision:
         raise RuntimeError("Push the release commit to origin/main before publishing.")
     directory = ROOT / "build/releases" / version
+    if (directory / "SOURCE_REVISION").read_text().strip() != revision:
+        raise RuntimeError("Release artifacts are stale. Run Scripts/prepare_release.sh again.")
     assets = validate_artifacts(directory, version, build, metadata["SUPublicEDKey"])
     api = GitHub()
     releases = api.request("GET", "/releases?per_page=100")
