@@ -473,7 +473,7 @@ final class PHPManager: Sendable {
         if fm.fileExists(atPath: file.path) {
             try fm.copyItem(at: file, to: home.appendingPathComponent(".zprofile.php-switcher-" + UUID().uuidString + ".bak"))
         }
-        try (text + "\n# PHP Switcher — PHP w terminalu\n" + desired + "\n").write(to: file, atomically: true, encoding: .utf8)
+        try (text + "\n# PHP Switcher — PHP in Terminal\n" + desired + "\n").write(to: file, atomically: true, encoding: .utf8)
         if let permissions = attrs?[.posixPermissions] { try fm.setAttributes([.posixPermissions: permissions], ofItemAtPath: file.path) }
     }
 }

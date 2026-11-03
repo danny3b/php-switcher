@@ -156,7 +156,7 @@ struct PHPIniDocument {
         guard !added.isEmpty else { return rewritten }
         let newline = text.contains("\r\n") ? "\r\n" : "\n"
         let bom = rewritten.hasPrefix("\u{feff}") ? "\u{feff}" : ""
-        return bom + "; PHP Switcher — ustawienia" + newline + added.joined(separator: newline) + newline + (bom.isEmpty ? rewritten : String(rewritten.dropFirst()))
+        return bom + "; PHP Switcher settings" + newline + added.joined(separator: newline) + newline + (bom.isEmpty ? rewritten : String(rewritten.dropFirst()))
     }
 }
 
