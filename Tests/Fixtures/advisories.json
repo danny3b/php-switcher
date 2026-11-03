@@ -1,0 +1,1558 @@
+[
+  {
+    "ghsa_id": "GHSA-7875-c8px-7q5f",
+    "cve_id": "CVE-2026-93682",
+    "summary": "Out-of-bounds read in the HTTP stream wrapper when following a redirect with an empty Location header",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.26",
+        "patched_versions": "8.4.26"
+      },
+      {
+        "vulnerable_version_range": "<8.5.11",
+        "patched_versions": "8.5.11"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-w8hw-w9fx-j79w",
+    "cve_id": "CVE-2026-109618",
+    "summary": "RCE via OOM corruption",
+    "severity": "critical",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.2.35",
+        "patched_versions": "8.2.35"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.36",
+        "patched_versions": "8.3.36"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.27",
+        "patched_versions": "8.4.27"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.12",
+        "patched_versions": "8.5.12"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-6wmf-4rv5-p3rp",
+    "cve_id": "CVE-2026-109619",
+    "summary": "RCE via stale global state",
+    "severity": "critical",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.2.35",
+        "patched_versions": "8.2.35"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.36",
+        "patched_versions": "8.3.36"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.27",
+        "patched_versions": "8.4.27"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.12",
+        "patched_versions": "8.5.12"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-62xp-839h-2637",
+    "cve_id": "CVE-2026-91768",
+    "summary": "IPv6 ACL bypass in FastCGI listen.allowed_clients due to partial address comparison (memcmp 12 bytes)",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.26",
+        "patched_versions": "8.4.26"
+      },
+      {
+        "vulnerable_version_range": "<8.5.11",
+        "patched_versions": "8.5.11"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-ch8v-r6jh-4vvr",
+    "cve_id": null,
+    "summary": "ext/filter: encode 0xFF in FILTER_SANITIZE_ENCODED",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.25",
+        "patched_versions": "8.4.25"
+      },
+      {
+        "vulnerable_version_range": "<8.5.10",
+        "patched_versions": "8.5.10"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-7jrw-539f-x6vr",
+    "cve_id": "CVE-2026-14355",
+    "summary": "ext/openssl: Memory corruption (zend_mm_heap corrupted) in openssl_encrypt with AES-WRAP-PAD",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.2.32",
+        "patched_versions": "8.2.32"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.32",
+        "patched_versions": "8.3.32"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.23",
+        "patched_versions": "8.4.23"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.8",
+        "patched_versions": "8.5.8"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-fpwc-w8rq-cr92",
+    "cve_id": "CVE-2026-91766",
+    "summary": "Cross-origin credential leak in HTTP stream wrapper redirects",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.26",
+        "patched_versions": "8.4.26"
+      },
+      {
+        "vulnerable_version_range": "<8.5.11",
+        "patched_versions": "8.5.11"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-rgrp-mwpx-f6rm",
+    "cve_id": "CVE-2026-91765",
+    "summary": "SOAP: Unbounded Recursion in Server-Side cleanup_xml_node",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.26",
+        "patched_versions": "8.4.26"
+      },
+      {
+        "vulnerable_version_range": "<8.5.11",
+        "patched_versions": "8.5.11"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-7qpv-r5mr-78m4",
+    "cve_id": "CVE-2026-17543",
+    "summary": "SQL injection in ext-pgsql via E'...' backslash breakout",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.33",
+        "patched_versions": "8.2.33"
+      },
+      {
+        "vulnerable_version_range": "<8.3.33",
+        "patched_versions": "8.3.33"
+      },
+      {
+        "vulnerable_version_range": "<8.4.24",
+        "patched_versions": "8.4.24"
+      },
+      {
+        "vulnerable_version_range": "<8.5.9",
+        "patched_versions": "8.5.9"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-x692-q9x7-8c3f",
+    "cve_id": "CVE-2026-17544",
+    "summary": "Out-of-bounds write in bccomp() via crafted operand and scale",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.4.24",
+        "patched_versions": "8.4.24"
+      },
+      {
+        "vulnerable_version_range": "<8.5.9",
+        "patched_versions": "8.5.9"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-mhmq-mmqj-2v39",
+    "cve_id": "CVE-2026-12184",
+    "summary": "Failure to setup TLS with a remote server can result in a remote DoS",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.3.32",
+        "patched_versions": "8.3.32"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.21",
+        "patched_versions": "8.4.21"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.6",
+        "patched_versions": "8.5.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-xr7j-rvgx-xq5p",
+    "cve_id": "CVE-2026-91767",
+    "summary": "Heap-buffer-overflow in php_openssl_matches_wildcard_name on crafted server cert wildcard CN",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.26",
+        "patched_versions": "8.4.26"
+      },
+      {
+        "vulnerable_version_range": "<8.5.11",
+        "patched_versions": "8.5.11"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-hmxp-6pc4-f3vv",
+    "cve_id": "CVE-2026-7262",
+    "summary": "NULL pointer dereference in SOAP apache:Map decoder with missing <value>",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.2.31",
+        "patched_versions": "8.2.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.31",
+        "patched_versions": "8.3.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.21",
+        "patched_versions": "8.4.21"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.6",
+        "patched_versions": "8.5.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-m33r-qmcv-p97q",
+    "cve_id": "CVE-2026-7261",
+    "summary": "SoapServer session-persisted object use-after-free via SOAP header fault",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.2.31",
+        "patched_versions": "8.2.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.31",
+        "patched_versions": "8.3.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.21",
+        "patched_versions": "8.4.21"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.6",
+        "patched_versions": "8.5.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-85c2-q967-79q5",
+    "cve_id": "CVE-2026-6722",
+    "summary": "Use-After-Free in SOAP using Apache map with Remote Code Execution",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.2.31",
+        "patched_versions": "8.2.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.31",
+        "patched_versions": "8.3.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.21",
+        "patched_versions": "8.4.21"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.6",
+        "patched_versions": "8.5.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-m8rr-4c36-8gq4",
+    "cve_id": "CVE-2026-7258",
+    "summary": "Out-of-bounds read in urldecode()",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.2.31",
+        "patched_versions": "8.2.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.31",
+        "patched_versions": "8.3.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.21",
+        "patched_versions": "8.4.21"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.6",
+        "patched_versions": "8.5.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-9f67-6fw4-hpfp",
+    "cve_id": "CVE-2026-17545",
+    "summary": "PHP on Windows: Reserved Device Names Are Not Rejected Before File/Stream I/O which can cause DoS",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.26",
+        "patched_versions": "8.4.26"
+      },
+      {
+        "vulnerable_version_range": "<8.5.11",
+        "patched_versions": "8.5.11"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-vc5h-9ppw-p5f3",
+    "cve_id": "CVE-2026-7260",
+    "summary": "Stack overflow in phar with circular symlinks",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.33",
+        "patched_versions": "8.2.33"
+      },
+      {
+        "vulnerable_version_range": "<8.3.33",
+        "patched_versions": "8.3.33"
+      },
+      {
+        "vulnerable_version_range": "<8.4.24",
+        "patched_versions": "8.4.24"
+      },
+      {
+        "vulnerable_version_range": "<8.5.9",
+        "patched_versions": "8.5.9"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-vvx9-73fr-5jjx",
+    "cve_id": "CVE-2026-91769",
+    "summary": "TLS Hostname Verification Falls Back to CN After SAN Mismatch",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.26",
+        "patched_versions": "8.4.26"
+      },
+      {
+        "vulnerable_version_range": "<8.5.11",
+        "patched_versions": "8.5.11"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-j3wh-g957-2m85",
+    "cve_id": "CVE-2026-6103",
+    "summary": "Phar TAR phar_tar_number() Integer Overflow - Archive Entry Injection",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.26",
+        "patched_versions": "8.4.26"
+      },
+      {
+        "vulnerable_version_range": "<8.5.11",
+        "patched_versions": "8.5.11"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-74r9-qxhc-fx53",
+    "cve_id": "CVE-2026-6104",
+    "summary": "Global buffer over-read in mb_convert_encoding() with attacker-supplied encoding",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.4.21",
+        "patched_versions": "8.4.21"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.6",
+        "patched_versions": "8.5.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-4jhr-8w89-j733",
+    "cve_id": "CVE-2026-7263",
+    "summary": "DoS attack via DOMNode::C14N()",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.4.21",
+        "patched_versions": "8.4.21"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.6",
+        "patched_versions": "8.5.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-88hq-2827-7pg6",
+    "cve_id": "CVE-2026-92842",
+    "summary": "OOB read / info leak in convert.* stream filters when line-break-chars contains NUL",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.26",
+        "patched_versions": "8.4.26"
+      },
+      {
+        "vulnerable_version_range": "<8.5.11",
+        "patched_versions": "8.5.11"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-7qg2-v9fj-4mwv",
+    "cve_id": "CVE-2026-6735",
+    "summary": "XSS within PHP-FPM status endpoint",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.2.31",
+        "patched_versions": "8.2.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.31",
+        "patched_versions": "8.3.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.21",
+        "patched_versions": "8.4.21"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.6",
+        "patched_versions": "8.5.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-96wq-48vp-hh57",
+    "cve_id": "CVE-2026-7568",
+    "summary": "Signed integer overflow in metaphone()",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.2.31",
+        "patched_versions": "8.2.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.31",
+        "patched_versions": "8.3.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.21",
+        "patched_versions": "8.4.21"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.6",
+        "patched_versions": "8.5.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-wm6j-2649-pv75",
+    "cve_id": "CVE-2026-7259",
+    "summary": "Null pointer dereference in php_mb_check_encoding() via mb_ereg_search_init()",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.5.6",
+        "patched_versions": "8.5.6"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.21",
+        "patched_versions": "8.4.21"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.31",
+        "patched_versions": "8.3.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.31",
+        "patched_versions": "8.2.31"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-3237-qqm7-mfv7",
+    "cve_id": "CVE-2025-14177",
+    "summary": "Information Leak of Memory in getimagesize",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.34",
+        "patched_versions": "8.1.34"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.30",
+        "patched_versions": "8.2.30"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.29",
+        "patched_versions": "8.3.29"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.16",
+        "patched_versions": "8.4.16"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.1",
+        "patched_versions": "8.5.1"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-h96m-rvf9-jgm2",
+    "cve_id": "CVE-2025-14178",
+    "summary": "Heap buffer overflow in array_merge()",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.34",
+        "patched_versions": "8.1.34"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.30",
+        "patched_versions": "8.2.30"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.29",
+        "patched_versions": "8.3.29"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.16",
+        "patched_versions": "8.4.16"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.1",
+        "patched_versions": "8.5.1"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-8xr5-qppj-gvwj",
+    "cve_id": "CVE-2025-14180",
+    "summary": "NULL Pointer Dereference in PDO quoting",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.34",
+        "patched_versions": "8.1.34"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.30",
+        "patched_versions": "8.2.30"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.29",
+        "patched_versions": "8.3.29"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.16",
+        "patched_versions": "8.4.16"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.1",
+        "patched_versions": "8.5.1"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-w476-322c-wpvm",
+    "cve_id": "CVE-2025-14179",
+    "summary": "SQL injection in pdo_firebird via NUL bytes in quoted strings",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.2.31",
+        "patched_versions": "8.2.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.31",
+        "patched_versions": "8.3.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.21",
+        "patched_versions": "8.4.21"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.6",
+        "patched_versions": "8.5.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-cj93-vc83-wgqv",
+    "cve_id": "CVE-2025-14181",
+    "summary": "Integer overflow to buffer overflow in soap HTTP parsing",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.26",
+        "patched_versions": "8.4.26"
+      },
+      {
+        "vulnerable_version_range": "<8.5.11",
+        "patched_versions": "8.5.11"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-453j-q27h-5p8x",
+    "cve_id": "CVE-2025-6491",
+    "summary": "NULL Pointer Dereference in PHP SOAP Extension via Large XML Namespace Prefix",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.33",
+        "patched_versions": "8.1.33"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.29",
+        "patched_versions": "8.2.29"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.23",
+        "patched_versions": "8.3.23"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.10",
+        "patched_versions": "8.4.10"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-www2-q4fc-65wf",
+    "cve_id": null,
+    "summary": "Null byte termination in dns_get_record()",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.34",
+        "patched_versions": "8.1.34"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.30",
+        "patched_versions": "8.2.30"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.29",
+        "patched_versions": "8.3.29"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.16",
+        "patched_versions": "8.4.16"
+      },
+      {
+        "vulnerable_version_range": "< 8.5.1",
+        "patched_versions": "8.5.1"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-hrwm-9436-5mv3",
+    "cve_id": "CVE-2025-1735",
+    "summary": "pgsql extension does not check for errors during escaping",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.33",
+        "patched_versions": "8.1.33"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.29",
+        "patched_versions": "8.2.29"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.23",
+        "patched_versions": "8.3.23"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.10",
+        "patched_versions": "8.4.10"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-52jp-hrpf-2jff",
+    "cve_id": "CVE-2025-1861",
+    "summary": "Stream HTTP wrapper truncate redirect location to 1024 bytes",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.32",
+        "patched_versions": "8.1.32"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.28",
+        "patched_versions": "8.2.28"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.18",
+        "patched_versions": "8.3.19"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.5",
+        "patched_versions": "8.4.5"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-pcmh-g36c-qc44",
+    "cve_id": "CVE-2025-1734",
+    "summary": "Streams HTTP wrapper does not fail for headers with invalid name and no colon",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.32",
+        "patched_versions": "8.1.32"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.28",
+        "patched_versions": "8.2.28"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.18",
+        "patched_versions": "8.3.19"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.5",
+        "patched_versions": "8.4.5"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-wg4p-4hqh-c3g9",
+    "cve_id": null,
+    "summary": "Possible out of bounds read when XML_OPTION_SKIP_TAGSTART used",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.32",
+        "patched_versions": "8.1.32"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.28",
+        "patched_versions": "8.2.28"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.18",
+        "patched_versions": "8.3.19"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.5",
+        "patched_versions": "8.4.5"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-v8xr-gpvj-cx9g",
+    "cve_id": "CVE-2025-1217",
+    "summary": "Header parser of `http` stream wrapper does not handle folded headers",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.32",
+        "patched_versions": "8.1.32"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.28",
+        "patched_versions": "8.2.28"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.18",
+        "patched_versions": "8.3.19"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.5",
+        "patched_versions": "8.4.5"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-r6x9-5r99-36j7",
+    "cve_id": "CVE-2025-1218",
+    "summary": "Various packet overreads in mysqlnd_writeprotocol.c",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<8.2.34",
+        "patched_versions": "8.2.34"
+      },
+      {
+        "vulnerable_version_range": "<8.3.35",
+        "patched_versions": "8.3.35"
+      },
+      {
+        "vulnerable_version_range": "<8.4.26",
+        "patched_versions": "8.4.26"
+      },
+      {
+        "vulnerable_version_range": "<8.5.11",
+        "patched_versions": "8.5.11"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-p3x9-6h7p-cgfc",
+    "cve_id": "CVE-2025-1219",
+    "summary": "libxml streams use wrong `content-type` header when requesting a redirected resource",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.32",
+        "patched_versions": "8.1.32"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.28",
+        "patched_versions": "8.2.28"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.18",
+        "patched_versions": "8.3.19"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.5",
+        "patched_versions": "8.4.5"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-hgf5-96fm-v528",
+    "cve_id": "CVE-2025-1736",
+    "summary": "Stream HTTP wrapper header check might omit basic auth header",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.32",
+        "patched_versions": "8.1.32"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.28",
+        "patched_versions": "8.2.28"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.18",
+        "patched_versions": "8.3.19"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.5",
+        "patched_versions": "8.4.5"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-4w77-75f9-2c8w",
+    "cve_id": null,
+    "summary": "Heap-Use-After-Free in sapi_read_post_data Processing in CLI SAPI Interface",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.31",
+        "patched_versions": "8.1.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.26",
+        "patched_versions": "8.2.26"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.14",
+        "patched_versions": "8.3.14"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-r977-prxv-hc43",
+    "cve_id": "CVE-2024-11233",
+    "summary": "Single byte overread with convert.quoted-printable-decode filter",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.31",
+        "patched_versions": "8.1.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.26",
+        "patched_versions": "8.2.26"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.14",
+        "patched_versions": "8.3.14"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-rwp7-7vc6-8477",
+    "cve_id": "CVE-2024-11235",
+    "summary": "Reference counting in php_request_shutdown causes Use-After-Free",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.3.18",
+        "patched_versions": "8.3.19"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.5",
+        "patched_versions": "8.4.5"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-5hqh-c84r-qjcv",
+    "cve_id": "CVE-2024-11236",
+    "summary": "Integer overflow in the firebird and dblib quoters causing OOB writes",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.31",
+        "patched_versions": "8.1.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.26",
+        "patched_versions": "8.2.26"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.14",
+        "patched_versions": "8.3.14"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-c5f2-jwm7-mmq2",
+    "cve_id": "CVE-2024-11234",
+    "summary": "Configuring a proxy in a stream context might allow for CRLF injection in URIs",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.31",
+        "patched_versions": "8.1.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.26",
+        "patched_versions": "8.2.26"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.14",
+        "patched_versions": "8.3.14"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-g665-fm4p-vhff",
+    "cve_id": "CVE-2024-8932",
+    "summary": "OOB access in ldap_escape",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.31",
+        "patched_versions": "8.1.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.26",
+        "patched_versions": "8.2.26"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.14",
+        "patched_versions": "8.3.14"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-h35g-vwh6-m678",
+    "cve_id": "CVE-2024-8929",
+    "summary": "[Mysqlnd] Leak partial content of the heap through heap buffer over-read ",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.31",
+        "patched_versions": "8.1.31"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.26",
+        "patched_versions": "8.2.26"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.14",
+        "patched_versions": "8.3.14"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-865w-9rf3-2wh5",
+    "cve_id": "CVE-2024-9026",
+    "summary": "[PHP-FPM] Logs from childrens may be altered ",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.30",
+        "patched_versions": "8.1.30"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.24",
+        "patched_versions": "8.2.24"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.12",
+        "patched_versions": "8.3.12"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-3cr5-j632-f35r",
+    "cve_id": "CVE-2025-1220",
+    "summary": "Null byte termination in hostnames",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.33",
+        "patched_versions": "8.1.33"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.29",
+        "patched_versions": "8.2.29"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.23",
+        "patched_versions": "8.3.23"
+      },
+      {
+        "vulnerable_version_range": "< 8.4.10",
+        "patched_versions": "8.4.10"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-9pqp-7h25-4f32",
+    "cve_id": "CVE-2024-8925",
+    "summary": "Erroneous parsing of multipart form data",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.30",
+        "patched_versions": "8.1.30"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.24",
+        "patched_versions": "8.2.24"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.12",
+        "patched_versions": "8.3.12"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-p99j-rfp4-xqvq",
+    "cve_id": "CVE-2024-8926",
+    "summary": "PHP CGI Parameter Injection Vulnerability (CVE-2024-4577 bypass)",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.30",
+        "patched_versions": "8.1.30"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.24",
+        "patched_versions": "8.2.24"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.12",
+        "patched_versions": "8.3.12"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-94p6-54jq-9mwp",
+    "cve_id": "CVE-2024-8927",
+    "summary": "cgi.force_redirect configuration is bypassable due to the environment variable collision",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.30",
+        "patched_versions": "8.1.30"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.24",
+        "patched_versions": "8.2.24"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.12",
+        "patched_versions": "8.3.12"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-w8qr-v226-r27w",
+    "cve_id": "CVE-2024-5458",
+    "summary": "Filter bypass in filter_var (FILTER_VALIDATE_URL)",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "7.3.27 - 7.3.33, 7.4.15 - 7.4.33, 8.0.2 - 8.0.30, 8.1.0 - 8.1.28, 8.2.0 - 8.2.19, 8.3.0 - 8.3.7",
+        "patched_versions": "8.1.29, 8.2.20, 8.3.8."
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-3qgc-jrrr-25jv",
+    "cve_id": "CVE-2024-4577",
+    "summary": "PHP RCE: A Bypass of CVE-2012-1823, Argument Injection in PHP-CGI",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.3.8",
+        "patched_versions": "8.3.8"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.20",
+        "patched_versions": "8.2.20"
+      },
+      {
+        "vulnerable_version_range": "< 8.1.29",
+        "patched_versions": "8.1.29"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-9fcc-425m-g385",
+    "cve_id": "CVE-2024-5585",
+    "summary": "bypass CVE-2024-1874",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "8.3.6",
+        "patched_versions": "8.1.29, 8.2.20, 8.3.8"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-wpj3-hf5j-x4v4",
+    "cve_id": "CVE-2024-2756",
+    "summary": "__Host-/__Secure- cookie bypass due to partial CVE-2022-31629 fix",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "> 8.1.11, < 8.1.28",
+        "patched_versions": "8.1.28"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.18",
+        "patched_versions": "8.2.18"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.5",
+        "patched_versions": "8.3.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-h746-cjrr-wfmr",
+    "cve_id": "CVE-2024-3096",
+    "summary": "password_verify can erroneously return true, opening ATO risk",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.28",
+        "patched_versions": " 8.1.28"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.18",
+        "patched_versions": "8.2.18"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.5",
+        "patched_versions": "8.3.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-fjp9-9hwx-59fq",
+    "cve_id": "CVE-2024-2757",
+    "summary": "mb_encode_mimeheader runs endlessly for some inputs",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.3.5",
+        "patched_versions": "8.3.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-pc52-254m-w9w7",
+    "cve_id": "CVE-2024-1874",
+    "summary": "Command injection via array-ish $command parameter of proc_open even if bypass_shell option enabled on Windows",
+    "severity": "critical",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.1.28",
+        "patched_versions": " 8.1.28"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.18",
+        "patched_versions": "8.2.18"
+      },
+      {
+        "vulnerable_version_range": "< 8.3.5",
+        "patched_versions": "8.3.6"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-hh26-4ppw-5864",
+    "cve_id": "CVE-2024-2408",
+    "summary": "PHP is vulnerable to the Marvin Attack",
+    "severity": "medium",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "8.2.12",
+        "patched_versions": ""
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-3qrf-m4j2-pcrr",
+    "cve_id": "CVE-2023-3823",
+    "summary": "Security issue with external entity loading in XML without enabling it",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.0.30",
+        "patched_versions": "8.0.30"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-jqcx-ccgc-xwhv",
+    "cve_id": "CVE-2023-3824",
+    "summary": "Buffer overflow and overread in phar_dir_read()",
+    "severity": "critical",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.0.30",
+        "patched_versions": "8.0.30"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-76gg-c692-v2mw",
+    "cve_id": "CVE-2023-3247",
+    "summary": "Missing error check and insufficient random bytes in HTTP Digest authentication for SOAP",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.0.29",
+        "patched_versions": "8.0.29"
+      },
+      {
+        "vulnerable_version_range": "< 8.1.20",
+        "patched_versions": "8.1.20"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.7",
+        "patched_versions": "8.2.7"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-7fj2-8x79-rjf4",
+    "cve_id": "CVE-2023-0567",
+    "summary": "BCrypt hashes erroneously validate if the salt is cut short by `$`",
+    "severity": "low",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "< 8.0.28",
+        "patched_versions": "8.0.28"
+      },
+      {
+        "vulnerable_version_range": "< 8.1.16",
+        "patched_versions": "8.1.16"
+      },
+      {
+        "vulnerable_version_range": "< 8.2.3",
+        "patched_versions": "8.2.3"
+      }
+    ]
+  },
+  {
+    "ghsa_id": "GHSA-54hq-v5wp-fqgv",
+    "cve_id": "CVE-2023-0662",
+    "summary": "DoS vulnerability when parsing multipart request body",
+    "severity": "high",
+    "state": "published",
+    "withdrawn_at": null,
+    "vulnerabilities": [
+      {
+        "vulnerable_version_range": "<=8.0.27",
+        "patched_versions": "8.0.28"
+      },
+      {
+        "vulnerable_version_range": ">=8.1.0, <=8.1.15",
+        "patched_versions": "8.1.16"
+      },
+      {
+        "vulnerable_version_range": ">=8.2.0, <=8.2.2",
+        "patched_versions": "8.2.3"
+      }
+    ]
+  }
+]

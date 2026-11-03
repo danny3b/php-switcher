@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0"><dict>
+<key>CFBundleName</key><string>PHP Switcher</string>
+<key>CFBundleDisplayName</key><string>PHP Switcher</string>
+<key>CFBundleIdentifier</key><string>pl.daniel.php-switcher</string>
+<key>CFBundleExecutable</key><string>PHPSwitcher</string>
+<key>CFBundleIconFile</key><string>AppIcon</string>
+<key>CFBundlePackageType</key><string>APPL</string>
+<key>CFBundleShortVersionString</key><string>1.5.0</string>
+<key>CFBundleVersion</key><string>8</string>
+<key>CFBundleDevelopmentRegion</key><string>pl</string>
+<key>CFBundleLocalizations</key><array><string>pl</string><string>en</string></array>
+<key>LSMinimumSystemVersion</key><string>14.0</string>
+<key>NSHighResolutionCapable</key><true/>
+</dict></plist>
