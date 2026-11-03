@@ -11,7 +11,7 @@ Created by **danny3b**. Repository: [danny3b/php-switcher](https://github.com/da
 - Python 3, existing Homebrew build libraries, and a compatible PHP installation to build additional PHP releases.
 - Rosetta when using Intel Homebrew installations on Apple Silicon.
 
-The application itself has no external Swift dependencies. The PHP installer uses libraries already available on the machine; it does not provision a new Homebrew environment.
+The application bundles Sparkle for signed application updates. The build script downloads a pinned release and verifies its SHA-256 checksum. The PHP installer uses libraries already available on the machine; it does not provision a new Homebrew environment.
 
 ## Build and install
 
@@ -23,7 +23,7 @@ bash build.sh
 
 The output is `build/PHP Switcher.app`, signed locally with an ad hoc signature. Copy the application to `~/Applications` and open it. Run it from its final location before enabling launch at login.
 
-The bundled build script targets Apple Silicon. The resulting application is intended for local use; public binary distribution requires an appropriate Developer ID signing and notarization workflow.
+The bundled build script targets Apple Silicon. The current builds are ad hoc signed, without Apple Developer ID notarization; macOS may require approval when first opening a downloaded copy. Sparkle verifies updates with a separate Ed25519 release signature.
 
 ## Usage
 
@@ -44,6 +44,18 @@ The main window has **PHP versions**, **Settings**, and **About** tabs. Open set
 - **About:** shows the application name, version and build number from the bundle, a short description, and the creator, **danny3b**.
 
 See Apple's [SMAppService documentation](https://developer.apple.com/documentation/servicemanagement/smappservice) for the login-item mechanism.
+
+## Application updates
+
+Open **Settings → App updates** to check manually, change automatic checks or downloads, and install a downloaded update. The application menu and PHP menu also include **Check for app updates…**.
+
+- Checks run at startup and every six hours while the application is running, including when its window is closed to the menu bar. Sparkle manages scheduling and wake handling. Disable automatic checks to check only manually.
+- New compatible stable releases download automatically by default. Turn this off to use **Download update** instead.
+- **Install and restart** replaces the application and reopens it. PHP operations and an open configuration editor block this action until they finish or close. Normal application quit cancels a prepared installation instead of accepting it.
+- Both the update feed and archive require Ed25519 signatures. Archives are verified before extraction. A failed download or validation leaves the installed application in place and displays an error.
+- Updates come from the public [GitHub Releases page](https://github.com/danny3b/php-switcher/releases). No GitHub token is stored in the application. Checks do not upload PHP installation paths or project files, and Sparkle system-profile reporting is disabled.
+
+Version 1.6.0 is the first version with an updater; earlier versions need this version installed manually once. A source commit alone does not publish an application update: maintainers must publish a signed release with its ZIP archive and `appcast.xml`. See [Releasing](Docs/Releasing.md).
 
 ## Removing PHP installations
 
@@ -143,6 +155,8 @@ Use English by default for documentation, development instructions, code comment
 | `Sources/SecurityView.swift` | Security status and details |
 | `Sources/Preferences.swift` | Saved preferences and launch-at-login management |
 | `Sources/PreferencesView.swift` | Main tabs, app settings, and About view |
+| `Sources/AppUpdates.swift` | Sparkle scheduling, download state, and explicit installation |
+| `Sources/AppUpdateView.swift` | Application update controls and progress |
 | `Sources/Localization.swift` | Language selection and string interpolation |
 | `Resources/en.lproj/Localizable.strings` | English UI translations |
 | `Resources/install_php.py` | PHP source installer |
@@ -158,6 +172,9 @@ bash build.sh
 
 xcrun swiftc -swift-version 5 -parse-as-library -module-cache-path build/module-cache Sources/Localization.swift Sources/Preferences.swift Tests/PreferencesTests.swift -framework ServiceManagement -o build/preferences-tests
 build/preferences-tests
+
+xcrun swiftc -swift-version 5 -parse-as-library -module-cache-path build/module-cache -F build/dependencies/Sparkle-2.10.1 -framework Sparkle -Xlinker -rpath -Xlinker "$PWD/build/dependencies/Sparkle-2.10.1" Sources/Localization.swift Sources/AppUpdates.swift Tests/AppUpdatesTests.swift -o build/app-update-tests
+build/app-update-tests
 
 python3 -m unittest discover -s Tests -p 'test_*.py' -v
 
@@ -178,6 +195,8 @@ build/security-tests
 ```
 
 Tests use isolated temporary directories and do not switch the user's real PHP installation. Preference tests use a separate user-defaults suite and a simulated login-item manager. Removal tests cover recovery, active-version protection, directory boundaries, symbolic links, replacement races, Trash failures, and installer concurrency. Security tests cover version ranges, branch isolation, critical fixes, unsupported or unknown data, caching, pagination, and connection/API failures.
+
+App update tests cover automatic and manual downloads, progress, persistence, explicit installation, restart blocking, cancellation before normal quit, and offline/incompatible-release handling. Release publishing validates archive metadata, checksums, signatures, and the source revision before uploading assets.
 
 `Tests/Fixtures` contains selected fields from official responses retrieved on October 22, 2026, without advisory descriptions.
 
