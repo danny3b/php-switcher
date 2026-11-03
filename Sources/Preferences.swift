@@ -47,7 +47,10 @@ import ServiceManagement
 
     func completeLanguageSelection(_ selected: AppLanguage) { language = selected }
 
-    func refreshLoginStatus() { loginStatus = loginItem.status }
+    func refreshLoginStatus() {
+        let status = loginItem.status
+        if loginStatus != status { loginStatus = status }
+    }
 
     func setLaunchAtLogin(_ enabled: Bool) {
         loginError = nil

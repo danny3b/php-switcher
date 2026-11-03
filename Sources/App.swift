@@ -15,8 +15,12 @@ struct InstallProgress: Decodable {
     static let shared = SwitcherStore()
     let manager = PHPManager()
     @Published var selectedTab: AppTab = .versions
-    @Published var installations: [PHPInstallation] = []
-    @Published var activeRoot: String?
+    @Published var installations: [PHPInstallation] = [] {
+        didSet { if oldValue != installations { refreshSecurityAssessments() } }
+    }
+    @Published var activeRoot: String? {
+        didSet { if oldValue != activeRoot { refreshSecurityAssessments() } }
+    }
     @Published var loading = false
     @Published var working = false
     @Published var installing: String?
@@ -31,7 +35,17 @@ struct InstallProgress: Decodable {
     @Published var logPath: String?
     @Published var configuration: PHPIniEditor?
     @Published var removalStatus: String?
-    @Published var securitySnapshot: PHPSecuritySnapshot?
+    @Published var securitySnapshot: PHPSecuritySnapshot? {
+        didSet {
+            assessmentCache.snapshot = securitySnapshot
+            refreshSecurityAssessments()
+        }
+    }
+    @Published private(set) var securityAssessments: [PHPSecurityAssessment] = []
+    private let assessmentCache: PHPSecurityAssessmentCache
+    init(assessmentCache: PHPSecurityAssessmentCache? = nil) {
+        self.assessmentCache = assessmentCache ?? PHPSecurityAssessmentCache()
+    }
     @Published var securityChecking = false
     @Published var securityError: String?
     @Published var securityDetails = false
@@ -52,7 +66,9 @@ struct InstallProgress: Decodable {
     var monitored: [PHPInstallation] {
         installations.filter { $0.source == "PHP Switcher" || $0.source == "Dodane ręcznie" || $0.root == activeRoot }
     }
-    var securityAssessments: [PHPSecurityAssessment] { monitored.compactMap { securitySnapshot?.assess($0) } }
+    private func refreshSecurityAssessments() {
+        securityAssessments = assessmentCache.assessments(for: monitored)
+    }
     var criticalSecurity: Bool { securityAssessments.contains { $0.critical } }
     var securityAttention: Bool { securityAssessments.contains { $0.needsAttention } }
     var securityFresh: Bool { securitySnapshot?.isFresh() == true && securityError == nil }
@@ -111,8 +127,8 @@ struct InstallProgress: Decodable {
     @discardableResult func selectTab(_ tab: AppTab) -> Bool {
         guard tab != selectedTab else { return true }
         if let editor = configuration, !editor.canClose() { return false }
-        configuration = nil
-        showOther = false
+        if configuration != nil { configuration = nil }
+        if showOther { showOther = false }
         selectedTab = tab
         return true
     }
@@ -556,6 +572,20 @@ struct SwitcherView: View {
 }
 
 @MainActor final class AppDelegate: NSObject, NSApplicationDelegate {
+    private struct MenuState: Equatable {
+        let installations: [PHPInstallation]
+        let activeRoot: String?
+        let activeVersion: String?
+        let securityTitle: String
+        let critical: Bool
+        let busy: Bool
+        let checking: Bool
+        let loading: Bool
+        let updateReady: Bool
+        let language: AppLanguage
+    }
+    private var lastMenuState: MenuState?
+    private var menuUpdateScheduled = false
     var statusItem: NSStatusItem?
     var subscription: AnyCancellable?
     var preferencesSubscription: AnyCancellable?
@@ -568,7 +598,7 @@ struct SwitcherView: View {
         item.button?.font = .monospacedSystemFont(ofSize: 11, weight: .semibold)
         item.button?.toolTip = L("PHP Switcher — aktywna wersja w terminalu")
         subscription = SwitcherStore.shared.objectWillChange.sink { [weak self] _ in
-            DispatchQueue.main.async { self?.updateMenu() }
+            self?.scheduleMenuUpdate()
         }
         preferencesSubscription = AppPreferences.shared.objectWillChange.sink { [weak self] _ in
             DispatchQueue.main.async { self?.updateMenu(); SwitcherStore.shared.objectWillChange.send() }
@@ -588,8 +618,24 @@ struct SwitcherView: View {
         NSApp.activate(ignoringOtherApps: true)
     }
 
+    private func scheduleMenuUpdate() {
+        guard !menuUpdateScheduled else { return }
+        menuUpdateScheduled = true
+        DispatchQueue.main.async { [weak self] in
+            self?.menuUpdateScheduled = false
+            self?.updateMenu()
+        }
+    }
+
     func updateMenu() {
         let store = SwitcherStore.shared
+        let state = MenuState(installations: store.installations, activeRoot: store.activeRoot,
+                              activeVersion: store.active?.version, securityTitle: store.securityTitle,
+                              critical: store.criticalSecurity, busy: store.busy,
+                              checking: store.securityChecking, loading: store.loading,
+                              updateReady: AppUpdates.shared.phase == .ready, language: AppPreferences.shared.language)
+        guard state != lastMenuState else { return }
+        lastMenuState = state
         statusItem?.button?.title = (store.criticalSecurity ? "⚠︎ " : "") + "PHP " + (store.active?.version ?? "–")
         statusItem?.button?.toolTip = "PHP Switcher — " + store.securityTitle
         let menu = NSMenu()
@@ -658,7 +704,10 @@ struct SwitcherView: View {
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool { showWindow(); return true }
 }
 
-@main struct PHPSwitcherApp: App {
+#if !TESTING
+@main
+#endif
+struct PHPSwitcherApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @ObservedObject private var preferences = AppPreferences.shared
     var body: some Scene {

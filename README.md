@@ -130,6 +130,8 @@ The installer was developed for an existing local Homebrew environment. A new Ma
 - Offline sources, API limits, unknown data formats, and unsupported versions are not presented as confirmation that PHP is up to date. The last successful result remains visible with its timestamp and stale status. This is a version-and-advisory check, not an audit of linked libraries, PECL extensions, or vendor patches in custom builds. Each advisory describes its exploitation conditions.
 - Checks require no GitHub account. Requests go to php.net and api.github.com without sending installation paths or project files.
 
+Assessment results are reused while navigating. They are recalculated when the source snapshot, installation version, or monitored scope changes; switching tabs and rendering the menu do not repeat advisory analysis. Freshness and error indicators still use the current timestamp and connection status.
+
 Sources: [PHP release catalog](https://www.php.net/releases/?json), [PHP security advisories](https://github.com/php/php-src/security/advisories), and [GitHub's advisory API](https://docs.github.com/en/rest/security-advisories/repository-advisories#list-repository-security-advisories).
 
 ## Local files
@@ -201,11 +203,16 @@ build/configuration-tests
 
 xcrun swiftc -swift-version 5 -parse-as-library -module-cache-path build/module-cache Sources/Localization.swift Sources/Core.swift Sources/Security.swift Tests/SecurityTests.swift -o build/security-tests
 build/security-tests
+
+xcrun swiftc -O -DTESTING -swift-version 5 -parse-as-library -module-cache-path build/module-cache -F build/dependencies/Sparkle-2.10.1 -framework Sparkle -Xlinker -rpath -Xlinker "$PWD/build/dependencies/Sparkle-2.10.1" -framework SwiftUI -framework AppKit -framework ServiceManagement Sources/*.swift Tests/NavigationPerformanceTests.swift -o build/navigation-performance-tests
+build/navigation-performance-tests
 ```
 
 Tests use isolated temporary directories and do not switch the user's real PHP installation. Preference tests use a separate user-defaults suite and a simulated login-item manager. Removal tests cover recovery, active-version protection, directory boundaries, symbolic links, replacement races, Trash failures, and installer concurrency. Security tests cover version ranges, branch isolation, critical fixes, unsupported or unknown data, caching, pagination, and connection/API failures.
 
 App update tests cover automatic and manual downloads, progress, persistence, explicit installation, restart blocking, cancellation before normal quit, and offline/incompatible-release handling. Release publishing validates archive metadata, checksums, signatures, and the source revision before uploading assets.
+
+Navigation tests use fixture installations and count security evaluations to ensure tab changes never rerun advisory analysis. They also verify invalidation on changed versions, sources, active installations, removals, and new advisory data. The `TESTING` flag replaces only the app entry point with the test runner; it does not change the store's implementation.
 
 `Tests/Fixtures` contains selected fields from official responses retrieved on October 22, 2026, without advisory descriptions.
 

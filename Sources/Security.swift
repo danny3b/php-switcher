@@ -1,6 +1,8 @@
 import Foundation
 
 struct PHPVersion: Comparable, Hashable {
+    private static let validationPattern = try! NSRegularExpression(pattern: #"^\d{1,3}\.\d{1,3}\.\d{1,4}$"#)
+    private static let extractionPattern = try! NSRegularExpression(pattern: #"(?<![\d.])\d{1,3}\.\d{1,3}\.\d{1,4}(?![\dA-Za-z])"#)
     let major: Int
     let minor: Int
     let patch: Int
@@ -8,15 +10,14 @@ struct PHPVersion: Comparable, Hashable {
     var text: String { "\(branch).\(patch)" }
 
     init?(_ text: String) {
-        guard text.range(of: #"^\d{1,3}\.\d{1,3}\.\d{1,4}$"#, options: .regularExpression) != nil else { return nil }
+        guard Self.validationPattern.firstMatch(in: text, range: NSRange(text.startIndex..., in: text)) != nil else { return nil }
         let parts = text.split(separator: ".").compactMap { Int($0) }
         guard parts.count == 3 else { return nil }
         major = parts[0]; minor = parts[1]; patch = parts[2]
     }
     static func < (a: Self, b: Self) -> Bool { (a.major, a.minor, a.patch) < (b.major, b.minor, b.patch) }
     static func extract(from text: String) -> [Self] {
-        let regex = try! NSRegularExpression(pattern: #"(?<![\d.])\d{1,3}\.\d{1,3}\.\d{1,4}(?![\dA-Za-z])"#)
-        return regex.matches(in: text, range: NSRange(text.startIndex..., in: text)).compactMap {
+        return extractionPattern.matches(in: text, range: NSRange(text.startIndex..., in: text)).compactMap {
             Range($0.range, in: text).flatMap { Self(String(text[$0])) }
         }
     }
@@ -25,6 +26,7 @@ struct PHPVersion: Comparable, Hashable {
 /// GitHub advisories use comparisons, comma-separated intersections, and inclusive hyphen ranges.
 /// Unknown grammar stays unknown: it must never turn into a clean security result.
 enum PHPVersionRange {
+    private static let comparisonPattern = try! NSRegularExpression(pattern: #"^(<=|>=|<|>|=)?\s*(\d{1,3}\.\d{1,3}\.\d{1,4})$"#)
     static func contains(_ version: PHPVersion, in expression: String) -> Bool? {
         let text = expression.trimmingCharacters(in: .whitespacesAndNewlines)
         guard !text.isEmpty else { return nil }
@@ -40,8 +42,7 @@ enum PHPVersionRange {
             })
         }
         let checks: [Bool?] = parts.map { part in
-            let regex = try! NSRegularExpression(pattern: #"^(<=|>=|<|>|=)?\s*(\d{1,3}\.\d{1,3}\.\d{1,4})$"#)
-            guard let match = regex.firstMatch(in: part, range: NSRange(part.startIndex..., in: part)),
+            guard let match = comparisonPattern.firstMatch(in: part, range: NSRange(part.startIndex..., in: part)),
                   let number = Range(match.range(at: 2), in: part), let bound = PHPVersion(String(part[number])) else { return nil }
             let op = Range(match.range(at: 1), in: part).map { String(part[$0]) } ?? "="
             switch op {
@@ -154,6 +155,32 @@ struct PHPSecurityAssessment: Identifiable {
         if uncertain { return L("Wymaga ręcznego sprawdzenia") }
         if update != nil { return L("Dostępna nowsza wersja") }
         return L("Brak nowszych poprawek w sprawdzonych źródłach")
+    }
+}
+
+/// Cache derived findings for one source snapshot. Version and source changes
+/// invalidate individual entries; replacing the snapshot invalidates everything.
+@MainActor final class PHPSecurityAssessmentCache {
+    var snapshot: PHPSecuritySnapshot? {
+        didSet { entries.removeAll(keepingCapacity: true) }
+    }
+    private var entries: [String: PHPSecurityAssessment] = [:]
+    private let evaluate: (PHPSecuritySnapshot, PHPInstallation) -> PHPSecurityAssessment
+
+    init(evaluate: @escaping (PHPSecuritySnapshot, PHPInstallation) -> PHPSecurityAssessment = { $0.assess($1) }) {
+        self.evaluate = evaluate
+    }
+
+    func assessments(for installations: [PHPInstallation]) -> [PHPSecurityAssessment] {
+        guard let snapshot else { return [] }
+        let roots = Set(installations.map(\.root))
+        entries = entries.filter { roots.contains($0.key) }
+        return installations.map { installation in
+            if let cached = entries[installation.root], cached.installation == installation { return cached }
+            let result = evaluate(snapshot, installation)
+            entries[installation.root] = result
+            return result
+        }
     }
 }
 

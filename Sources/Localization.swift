@@ -32,6 +32,7 @@ enum AppLanguage: String, CaseIterable, Identifiable {
 }
 
 enum Localization {
+    private static let placeholderPattern = try! NSRegularExpression(pattern: #"\{(\d+)\}"#)
     private static let bundles: [AppLanguage: Bundle] = Dictionary(uniqueKeysWithValues:
         AppLanguage.allCases.compactMap { language in
             Bundle.main.url(forResource: language.rawValue, withExtension: "lproj")
@@ -43,9 +44,9 @@ enum Localization {
     static func text(_ key: String, arguments: [String] = [], language: AppLanguage = .current,
                      bundle: Bundle? = nil) -> String {
         let template = language == .polish ? key : ((bundle ?? bundles[language])?.localizedString(forKey: key, value: key, table: nil) ?? key)
-        let pattern = try! NSRegularExpression(pattern: #"\{(\d+)\}"#)
+        guard !arguments.isEmpty else { return template }
         var result = "", cursor = template.startIndex
-        for match in pattern.matches(in: template, range: NSRange(template.startIndex..., in: template)) {
+        for match in placeholderPattern.matches(in: template, range: NSRange(template.startIndex..., in: template)) {
             guard let range = Range(match.range, in: template), let number = Range(match.range(at: 1), in: template),
                   let index = Int(template[number]), arguments.indices.contains(index) else { continue }
             result += template[cursor..<range.lowerBound] + arguments[index]

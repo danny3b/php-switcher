@@ -1,5 +1,6 @@
 import Foundation
 import ServiceManagement
+import Combine
 
 @MainActor final class FakeLoginItem: LoginItemManaging {
     var status: SMAppService.Status = .notRegistered
@@ -43,6 +44,11 @@ import ServiceManagement
         login.status = .notFound
         preferences.refreshLoginStatus()
         check(!preferences.launchAtLogin && preferences.loginError == nil, "An unregistered app reported as not found is not an operation failure")
+        var unchangedNotifications = 0
+        let observation = preferences.objectWillChange.sink { unchangedNotifications += 1 }
+        preferences.refreshLoginStatus()
+        check(unchangedNotifications == 0, "Reading unchanged login status does not redraw the interface")
+        observation.cancel()
         preferences.language = .english
         let reopened = AppPreferences(defaults: defaults, loginItem: login, preferredLanguages: ["de-DE"])
         check(reopened.language == .english && !reopened.needsLanguageSelection, "A previously saved language survives reopening and an OS language change without prompting")
