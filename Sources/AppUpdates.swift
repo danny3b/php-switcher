@@ -182,7 +182,7 @@ enum AppUpdatePhase: Equatable {
     private func recordNoUpdate(_ issue: Error) {
         checked(); version = nil; progress = nil
         let reason = (issue as NSError).userInfo[SPUNoUpdateFoundReasonKey] as? NSNumber
-        if reason?.intValue == SPUNoUpdateFoundReason.onLatestVersion.rawValue {
+        if reason?.intValue == Int(SPUNoUpdateFoundReason.onLatestVersion.rawValue) {
             phase = .upToDate; error = nil
         } else {
             phase = .failed; error = issue.localizedDescription
@@ -208,7 +208,7 @@ enum AppUpdatePhase: Equatable {
     func showDownloadDidStartExtractingUpdate() { cancellation = nil; phase = .extracting; progress = nil }
     func showExtractionReceivedProgress(_ progress: Double) { self.progress = min(1, max(0, progress)) }
 
-    func showReadyToInstallAndRelaunch(_ reply: @escaping (SPUUserUpdateChoice) -> Void) {
+    func showReady(toInstallAndRelaunch reply: @escaping (SPUUserUpdateChoice) -> Void) {
         choice = reply; cancellation = nil; phase = .ready; progress = nil
         if quitCompletion != nil { cancel() }
     }
