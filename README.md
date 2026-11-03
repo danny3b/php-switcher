@@ -45,7 +45,7 @@ The labels in this README use the English interface. Choose **English** in the a
 
 The main window has **PHP versions**, **Settings**, and **About** tabs. Open settings with **⌘,**, the application menu, or the PHP menu in the menu bar.
 
-- **App language:** Polish or English. The selection is saved automatically and takes effect immediately in the interface, PHP menu, configuration editor, and installer progress messages. Existing users retain Polish as the default. GitHub advisory content and external tool logs retain their source language.
+- **App language:** Polish, English, German, French, or Italian. If no valid language choice is saved, the first launch asks you to choose one. It suggests the first supported language in your macOS preferences, falling back to English, and saves it only after **Continue**. Previously saved choices remain unchanged without showing the prompt again. You can change the language later in Settings; changes are saved and applied immediately to the interface, PHP menu, configuration editor, and installer progress messages. GitHub advisory content, system errors, and external tool logs retain their source language.
 - **Launch at startup:** opens PHP Switcher when the user logs in to macOS. The app uses `SMAppService.mainApp` and reads its actual system status, including after returning from System Settings. If macOS requires approval, the app displays a separate message and a button to open Login Items settings. A failed registration is not presented as enabled. The app does not register itself at login by default.
 - **About:** shows the application name, version and build number from the bundle, a short description, and the creator, **danny3b**.
 
@@ -161,13 +161,16 @@ Use English by default for documentation, development instructions, code comment
 | `Sources/SecurityView.swift` | Security status and details |
 | `Sources/Preferences.swift` | Saved preferences and launch-at-login management |
 | `Sources/PreferencesView.swift` | Main tabs, app settings, and About view |
+| `Sources/LanguageSelectionView.swift` | First-launch language selection and confirmation |
 | `Sources/AppUpdates.swift` | Sparkle scheduling, download state, and explicit installation |
 | `Sources/AppUpdateView.swift` | Application update controls and progress |
 | `Sources/Localization.swift` | Language selection and string interpolation |
-| `Resources/en.lproj/Localizable.strings` | English UI translations |
+| `Resources/{en,de,fr,it}.lproj/Localizable.strings` | English, German, French, and Italian UI translations |
 | `Resources/install_php.py` | PHP source installer |
 
 The existing localization system uses Polish source strings as fallback keys. `{0}`, `{1}`, and subsequent numbered placeholders represent arguments that translations may reorder. Installation source identifiers and configuration category identifiers remain independent of the selected language. English documentation conventions do not change saved application language preferences.
+
+All translated catalogs must contain the same keys and placeholders. Keep whitespace used by composed messages intact. `build.sh` includes all `.lproj` directories in the application bundle. A valid saved `appLanguage` value also records that language selection is complete; simply viewing the first-launch picker does not write a preference. Use an isolated user-defaults suite to test first launch without resetting the user's settings.
 
 ### Automated tests
 

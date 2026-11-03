@@ -2,7 +2,7 @@ import SwiftUI
 
 struct LanguageSelectionView: View {
     @ObservedObject var preferences: AppPreferences
-    @State private var selection: AppLanguage
+    @State<AppLanguage> private var selection
 
     init(preferences: AppPreferences) {
         self.preferences = preferences
