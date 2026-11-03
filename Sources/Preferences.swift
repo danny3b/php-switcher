@@ -19,19 +19,28 @@ import ServiceManagement
     private let defaults: UserDefaults
     private let loginItem: any LoginItemManaging
     @Published var language: AppLanguage {
-        didSet { defaults.set(language.rawValue, forKey: AppLanguage.defaultsKey) }
+        didSet {
+            defaults.set(language.rawValue, forKey: AppLanguage.defaultsKey)
+            needsLanguageSelection = false
+        }
     }
+    @Published private(set) var needsLanguageSelection: Bool
     @Published private(set) var loginStatus: SMAppService.Status
     @Published private(set) var loginError: String?
     var launchAtLogin: Bool { loginStatus == .enabled }
 
-    init(defaults: UserDefaults = .standard, loginItem: (any LoginItemManaging)? = nil) {
+    init(defaults: UserDefaults = .standard, loginItem: (any LoginItemManaging)? = nil,
+         preferredLanguages: [String] = Locale.preferredLanguages) {
         let loginItem = loginItem ?? SystemLoginItem()
         self.defaults = defaults
         self.loginItem = loginItem
-        language = AppLanguage(rawValue: defaults.string(forKey: AppLanguage.defaultsKey) ?? "") ?? .polish
+        let savedLanguage = AppLanguage(rawValue: defaults.string(forKey: AppLanguage.defaultsKey) ?? "")
+        language = savedLanguage ?? AppLanguage.preferred(from: preferredLanguages)
+        needsLanguageSelection = savedLanguage == nil
         loginStatus = loginItem.status
     }
+
+    func completeLanguageSelection(_ selected: AppLanguage) { language = selected }
 
     func refreshLoginStatus() { loginStatus = loginItem.status }
 

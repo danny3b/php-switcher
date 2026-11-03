@@ -7,8 +7,8 @@
 <key>CFBundleExecutable</key><string>PHPSwitcher</string>
 <key>CFBundleIconFile</key><string>AppIcon</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>1.6.1</string>
-<key>CFBundleVersion</key><string>10</string>
+<key>CFBundleShortVersionString</key><string>1.7.0</string>
+<key>CFBundleVersion</key><string>11</string>
 <key>SUFeedURL</key><string>https://github.com/danny3b/php-switcher/releases/latest/download/appcast.xml</string>
 <key>SUPublicEDKey</key><string>Rnqu/dce3Jgjm5jMJkiaGngVdCtsFjy0J7EpiR02KIU=</string>
 <key>SUEnableAutomaticChecks</key><true/>
@@ -19,7 +19,7 @@
 <key>SURequireSignedFeed</key><true/>
 <key>SUSendProfileInfo</key><false/>
 <key>CFBundleDevelopmentRegion</key><string>pl</string>
-<key>CFBundleLocalizations</key><array><string>pl</string><string>en</string></array>
+<key>CFBundleLocalizations</key><array><string>pl</string><string>en</string><string>de</string><string>fr</string><string>it</string></array>
 <key>LSMinimumSystemVersion</key><string>14.0</string>
 <key>NSHighResolutionCapable</key><true/>
 </dict></plist>

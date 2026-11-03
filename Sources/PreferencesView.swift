@@ -34,6 +34,9 @@ struct MainView: View {
         .frame(minWidth: 720, minHeight: 720)
         .background(Color(nsColor: .windowBackgroundColor))
         .environment(\.locale, preferences.language.locale)
+        .sheet(isPresented: Binding(get: { preferences.needsLanguageSelection }, set: { _ in })) {
+            LanguageSelectionView(preferences: preferences)
+        }
     }
 }
 

@@ -103,7 +103,7 @@ struct InstallProgress: Decodable {
     var logHandle: FileHandle?
     var jobStatus = ""
     var hasInstallerProgress = false
-    var canRestartForUpdate: Bool { !loading && !working && installing == nil && configuration == nil }
+    var canRestartForUpdate: Bool { !AppPreferences.shared.needsLanguageSelection && !loading && !working && installing == nil && configuration == nil }
     var busy: Bool { !canRestartForUpdate || AppUpdates.shared.phase == .installing }
     var active: PHPInstallation? { installations.first { $0.root == activeRoot } }
     var missing: [String] { suggested.filter { version in !installations.contains { $0.version == version } } }
@@ -571,7 +571,7 @@ struct SwitcherView: View {
             DispatchQueue.main.async { self?.updateMenu() }
         }
         preferencesSubscription = AppPreferences.shared.objectWillChange.sink { [weak self] _ in
-            DispatchQueue.main.async { self?.updateMenu() }
+            DispatchQueue.main.async { self?.updateMenu(); SwitcherStore.shared.objectWillChange.send() }
         }
         updateSubscription = AppUpdates.shared.objectWillChange.sink { [weak self] _ in
             DispatchQueue.main.async { self?.updateMenu(); SwitcherStore.shared.objectWillChange.send() }
