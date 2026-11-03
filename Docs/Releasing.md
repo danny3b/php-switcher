@@ -24,12 +24,12 @@ The packaging script checks that the existing Keychain key matches the public ke
 
    ```sh
    git push origin main
-   python3 Scripts/publish_release.py --notes Docs/ReleaseNotes-1.6.0.md --publish
+   python3 Scripts/publish_release.py --notes Docs/ReleaseNotes-1.6.1.md --publish
    ```
 
    Substitute the current release-notes path. The publisher uses the existing Git credential helper; no GitHub CLI or embedded token is needed. It requires a clean working tree, a matching remote `main`, matching packaged source revision, valid signatures, matching archive metadata, and matching checksums. It mounts the DMG read-only, checks the application signature and Applications shortcut, and compares every application file and symbolic link with the ZIP. It first creates a draft, uploads and verifies the ZIP, DMG, appcast, and combined checksums, then publishes it as the latest stable release. Omitting `--publish` leaves a draft.
 
-5. Open the published `releases/latest/download/appcast.xml` without authentication. Check from an installed copy, and test downloading and **Install and restart** from an older build. Verify the new version in **About** and check that preferences and PHP installations remain intact.
+5. Open the published `releases/latest/download/appcast.xml` without authentication and verify its version and assets. Leave the installed application untouched so the user can check from their older copy and test **Install and restart** themselves. After installation, the user can verify the version in **About** and that preferences and PHP installations remain intact.
 
 The publisher refuses an existing tag to prevent overwriting signed release artifacts. If uploading fails, the release stays a draft: inspect the error and draft on GitHub before retrying or completing it. Do not replace an already published archive; fix issues in a new version with a higher build number. Normal commits and draft/prerelease releases do not automatically become application updates.
 

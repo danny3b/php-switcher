@@ -23,6 +23,7 @@
 - Preserve the safeguards around active PHP installations, shared installer locks, configuration backups, Homebrew service ownership, and removal confirmations.
 - Use isolated temporary directories and a simulated login-item manager for automated tests. Keep live integration checks separate from the default test workflow.
 - Run `bash build.sh` for application changes and the relevant test commands from `README.md` for changed behavior.
+- Leave the installed application untouched when building or publishing releases. The user tests the update channel and triggers installation themselves; install locally only when explicitly requested.
 - Do not commit build output, Python bytecode, local logs, caches, or credentials.
 
 ## Repository
