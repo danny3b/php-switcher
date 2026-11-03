@@ -2,12 +2,7 @@ import SwiftUI
 
 struct LanguageSelectionView: View {
     @ObservedObject var preferences: AppPreferences
-    @State<AppLanguage> private var selection
-
-    init(preferences: AppPreferences) {
-        self.preferences = preferences
-        _selection = State(initialValue: preferences.language)
-    }
+    private var selection: AppLanguage { preferences.languageSelection }
 
     private func text(_ key: String) -> String { Localization.text(key, language: selection) }
 
@@ -15,7 +10,7 @@ struct LanguageSelectionView: View {
         VStack(alignment: .leading, spacing: 20) {
             Label(text("Wybierz język aplikacji"), systemImage: "globe")
                 .font(.title2.bold())
-            Picker(text("Język programu"), selection: $selection) {
+            Picker(text("Język programu"), selection: $preferences.languageSelection) {
                 ForEach(AppLanguage.allCases) { language in
                     Text(language.name).tag(language)
                 }

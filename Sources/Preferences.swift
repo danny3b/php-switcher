@@ -21,10 +21,13 @@ import ServiceManagement
     @Published var language: AppLanguage {
         didSet {
             defaults.set(language.rawValue, forKey: AppLanguage.defaultsKey)
+            languageSelection = language
             needsLanguageSelection = false
         }
     }
     @Published private(set) var needsLanguageSelection: Bool
+    // Previewing a first-launch choice must not persist it before confirmation.
+    @Published var languageSelection: AppLanguage
     @Published private(set) var loginStatus: SMAppService.Status
     @Published private(set) var loginError: String?
     var launchAtLogin: Bool { loginStatus == .enabled }
@@ -35,7 +38,9 @@ import ServiceManagement
         self.defaults = defaults
         self.loginItem = loginItem
         let savedLanguage = AppLanguage(rawValue: defaults.string(forKey: AppLanguage.defaultsKey) ?? "")
-        language = savedLanguage ?? AppLanguage.preferred(from: preferredLanguages)
+        let initialLanguage = savedLanguage ?? AppLanguage.preferred(from: preferredLanguages)
+        language = initialLanguage
+        languageSelection = initialLanguage
         needsLanguageSelection = savedLanguage == nil
         loginStatus = loginItem.status
     }

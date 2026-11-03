@@ -34,6 +34,8 @@ import ServiceManagement
         let preferences = AppPreferences(defaults: defaults, loginItem: login, preferredLanguages: ["pl-PL"])
         check(preferences.language == .polish && !preferences.launchAtLogin, "The suggested language follows macOS; login launch remains disabled")
         check(preferences.needsLanguageSelection && defaults.string(forKey: AppLanguage.defaultsKey) == nil, "First launch waits for explicit language confirmation without saving the suggestion")
+        preferences.languageSelection = .french
+        check(preferences.language == .polish && preferences.needsLanguageSelection && defaults.string(forKey: AppLanguage.defaultsKey) == nil, "Previewing another language does not persist or confirm it")
         check(AppPreferences(defaults: defaults, loginItem: login).needsLanguageSelection, "Closing before confirmation asks again next launch")
         preferences.completeLanguageSelection(.polish)
         check(!preferences.needsLanguageSelection && defaults.string(forKey: AppLanguage.defaultsKey) == "pl", "Confirming the suggested language completes first launch")
