@@ -13,7 +13,11 @@ Created by **danny3b**. Repository: [danny3b/php-switcher](https://github.com/da
 
 The application bundles Sparkle for signed application updates. The build script downloads a pinned release and verifies its SHA-256 checksum. The PHP installer uses libraries already available on the machine; it does not provision a new Homebrew environment.
 
-## Build and install
+## Download and install
+
+Download `PHP-Switcher-<version>-arm64.dmg` from the [latest release](https://github.com/danny3b/php-switcher/releases/latest). Open the disk image, drag **PHP Switcher.app** onto **Applications**, eject the image, and launch the application from Applications. Quit an existing copy before replacing it. The DMG contains the application and an Applications folder shortcut; no package installer is required.
+
+## Build from source
 
 ```sh
 git clone https://github.com/danny3b/php-switcher.git
@@ -22,6 +26,8 @@ bash build.sh
 ```
 
 The output is `build/PHP Switcher.app`, signed locally with an ad hoc signature. Copy the application to `~/Applications` and open it. Run it from its final location before enabling launch at login.
+
+To create a DMG from that build, run `bash Scripts/create_dmg.sh`. The image and its SHA-256 checksum are written to `build/releases/<version>/`. The full release workflow creates and uploads the DMG alongside the signed ZIP used for automatic updates; see [Releasing](Docs/Releasing.md).
 
 The bundled build script targets Apple Silicon. The current builds are ad hoc signed, without Apple Developer ID notarization; macOS may require approval when first opening a downloaded copy. Sparkle verifies updates with a separate Ed25519 release signature.
 

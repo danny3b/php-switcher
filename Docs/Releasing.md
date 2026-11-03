@@ -1,6 +1,6 @@
 # Releasing PHP Switcher
 
-Application updates use [Sparkle 2](https://sparkle-project.org/documentation/) and public GitHub Releases in `danny3b/php-switcher`. The application reads the latest stable release's `appcast.xml`, which points to a versioned ZIP asset. Keep the repository and release assets public so clients can download without credentials.
+Application updates use [Sparkle 2](https://sparkle-project.org/documentation/) and public GitHub Releases in `danny3b/php-switcher`. The application reads the latest stable release's `appcast.xml`, which points to a versioned ZIP asset. Each release also includes a DMG for manual installation by dragging the application into Applications. Keep the repository and release assets public so clients can download without credentials.
 
 ## Signing key
 
@@ -18,7 +18,7 @@ The packaging script checks that the existing Keychain key matches the public ke
    bash Scripts/prepare_release.sh
    ```
 
-   Output is in `build/releases/<version>/`: `PHP-Switcher-<version>-arm64.zip`, `appcast.xml`, `SHA256SUMS`, and a local `SOURCE_REVISION` marker. These files are ignored by Git. Do not edit the signed feed. Re-run preparation after any source changes.
+   Output is in `build/releases/<version>/`: `PHP-Switcher-<version>-arm64.zip`, `PHP-Switcher-<version>-arm64.dmg`, `appcast.xml`, `SHA256SUMS`, a standalone DMG checksum, and a local `SOURCE_REVISION` marker. These files are ignored by Git. Do not edit the signed feed. Re-run preparation after any source changes. The appcast generator receives only the ZIP, so the DMG cannot become a duplicate update entry.
 
 4. Push the source commit, then publish:
 
@@ -27,11 +27,25 @@ The packaging script checks that the existing Keychain key matches the public ke
    python3 Scripts/publish_release.py --notes Docs/ReleaseNotes-1.6.0.md --publish
    ```
 
-   Substitute the current release-notes path. The publisher uses the existing Git credential helper; no GitHub CLI or embedded token is needed. It requires a clean working tree, a matching remote `main`, matching packaged source revision, valid signatures, matching archive metadata, and matching checksums. It first creates a draft, uploads and verifies all three public assets, then publishes it as the latest stable release. Omitting `--publish` leaves a draft.
+   Substitute the current release-notes path. The publisher uses the existing Git credential helper; no GitHub CLI or embedded token is needed. It requires a clean working tree, a matching remote `main`, matching packaged source revision, valid signatures, matching archive metadata, and matching checksums. It mounts the DMG read-only, checks the application signature and Applications shortcut, and compares every application file and symbolic link with the ZIP. It first creates a draft, uploads and verifies the ZIP, DMG, appcast, and combined checksums, then publishes it as the latest stable release. Omitting `--publish` leaves a draft.
 
 5. Open the published `releases/latest/download/appcast.xml` without authentication. Check from an installed copy, and test downloading and **Install and restart** from an older build. Verify the new version in **About** and check that preferences and PHP installations remain intact.
 
 The publisher refuses an existing tag to prevent overwriting signed release artifacts. If uploading fails, the release stays a draft: inspect the error and draft on GitHub before retrying or completing it. Do not replace an already published archive; fix issues in a new version with a higher build number. Normal commits and draft/prerelease releases do not automatically become application updates.
+
+## Add a DMG to an existing release
+
+For an already published version without a DMG, use the exact original release ZIP, not a newly compiled application. Keep the version in `Resources/Info.plist` at the release being supplemented. Download its ZIP into `build/releases/<version>/` and extract it to a separate directory:
+
+```sh
+mkdir -p build/dmg-source
+ditto -x -k build/releases/1.6.0/PHP-Switcher-1.6.0-arm64.zip build/dmg-source
+bash Scripts/create_dmg.sh 'build/dmg-source/PHP Switcher.app'
+git push origin main
+python3 Scripts/publish_release.py --add-dmg
+```
+
+Commit packaging changes before publishing. `--add-dmg` verifies that the local ZIP matches GitHub's digest for the original asset and that the DMG contains exactly the same application. It uploads only the new DMG and its `.dmg.sha256` checksum. The existing ZIP, signed feed, combined checksums, release tag, and application build number remain intact. The command refuses to overwrite an existing DMG or checksum; if an upload is interrupted, inspect the release assets before completing it.
 
 ## Update behavior
 

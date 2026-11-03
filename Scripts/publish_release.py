@@ -33,7 +33,7 @@ def verify_bundle_matches_archive(app, archive):
             if not entry.filename.startswith(prefix) or entry.is_dir():
                 continue
             relative = entry.filename[len(prefix):]
-            if not relative or ".." in Path(relative).parts:
+            if not relative or Path(relative).is_absolute() or ".." in Path(relative).parts:
                 raise RuntimeError("Invalid application path in the ZIP archive.")
             expected_paths.add(relative)
             file = app / relative
