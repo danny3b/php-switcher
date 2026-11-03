@@ -11,8 +11,10 @@ import os
 from pathlib import Path
 import plistlib
 import re
+import stat
 import subprocess
 import sys
+import tempfile
 from urllib.parse import quote
 import xml.etree.ElementTree as ET
 import zipfile
@@ -20,6 +22,55 @@ import zipfile
 ROOT = Path(__file__).resolve().parents[1]
 REPOSITORY = "danny3b/php-switcher"
 API_ROOT = f"https://api.github.com/repos/{REPOSITORY}"
+
+
+def verify_bundle_matches_archive(app, archive):
+    """Reject a DMG containing a different app, even if its version is the same."""
+    with zipfile.ZipFile(archive) as package:
+        expected_paths = set()
+        for entry in package.infolist():
+            prefix = "PHP Switcher.app/"
+            if not entry.filename.startswith(prefix) or entry.is_dir():
+                continue
+            relative = entry.filename[len(prefix):]
+            if not relative or ".." in Path(relative).parts:
+                raise RuntimeError("Invalid application path in the ZIP archive.")
+            expected_paths.add(relative)
+            file = app / relative
+            if stat.S_ISLNK(entry.external_attr >> 16):
+                if not file.is_symlink() or os.readlink(file) != package.read(entry).decode():
+                    raise RuntimeError(f"DMG symbolic link differs from the ZIP: {relative}")
+            elif file.is_symlink() or not file.is_file() or file.read_bytes() != package.read(entry):
+                raise RuntimeError(f"DMG file differs from the ZIP: {relative}")
+        actual_paths = {str(file.relative_to(app)) for file in app.rglob("*") if file.is_symlink() or file.is_file()}
+        if not expected_paths or actual_paths != expected_paths:
+            raise RuntimeError("The DMG and ZIP application file lists differ.")
+
+
+def validate_dmg(image, archive):
+    subprocess.run(["/usr/bin/hdiutil", "verify", str(image)], check=True)
+    with tempfile.TemporaryDirectory(prefix="dmg-validation-", dir=ROOT / "build") as directory:
+        mount = Path(directory) / "volume"
+        mount.mkdir()
+        subprocess.run(["/usr/bin/hdiutil", "attach", "-readonly", "-nobrowse", "-noautoopen",
+                        "-mountpoint", str(mount), str(image)], check=True)
+        try:
+            applications = mount / "Applications"
+            if not applications.is_symlink() or os.readlink(applications) != "/Applications":
+                raise RuntimeError("The DMG is missing its Applications folder shortcut.")
+            app = mount / "PHP Switcher.app"
+            subprocess.run(["/usr/bin/codesign", "--verify", "--deep", "--strict", str(app)], check=True)
+            verify_bundle_matches_archive(app, archive)
+        finally:
+            subprocess.run(["/usr/bin/hdiutil", "detach", str(mount)], check=True)
+
+
+def upload_asset(api, release_id, asset):
+    uploaded = api.request("POST", f"/releases/{release_id}/assets", asset=asset)
+    expected_digest = "sha256:" + hashlib.sha256(asset.read_bytes()).hexdigest()
+    if uploaded["size"] != asset.stat().st_size or uploaded.get("digest") != expected_digest:
+        raise RuntimeError(f"Uploaded asset verification failed: {asset.name}")
+    print(f"Uploaded and verified {asset.name}.", flush=True)
 
 
 class GitHub:
@@ -61,13 +112,14 @@ class GitHub:
 
 def validate_artifacts(directory, version, build, public_key):
     archive = directory / f"PHP-Switcher-{version}-arm64.zip"
+    image = directory / f"PHP-Switcher-{version}-arm64.dmg"
     feed = directory / "appcast.xml"
     sums = directory / "SHA256SUMS"
     expected = {}
     for line in sums.read_text().splitlines():
         digest, filename = line.split(None, 1)
         expected[filename.strip()] = digest
-    for file in [archive, feed]:
+    for file in [archive, image, feed]:
         if hashlib.sha256(file.read_bytes()).hexdigest() != expected.get(file.name):
             raise RuntimeError(f"Checksum mismatch: {file.name}")
     namespace = "{http://www.andymatuschak.org/xml-namespaces/sparkle}"
@@ -96,14 +148,44 @@ def validate_artifacts(directory, version, build, public_key):
         raise RuntimeError("The signing key in Keychain does not match the embedded public key.")
     subprocess.run([str(verifier), "--account", "pl.daniel.php-switcher", "--verify", str(archive), signature], check=True)
     subprocess.run([str(verifier), "--account", "pl.daniel.php-switcher", "--verify", str(feed)], check=True)
-    return [archive, feed, sums]
+    validate_dmg(image, archive)
+    return [archive, image, feed, sums]
+
+
+def add_dmg_to_release(directory, version):
+    """Add a manual installer without replacing any published update assets."""
+    api = GitHub()
+    release = api.request("GET", "/releases/tags/v" + version)
+    if release["draft"]:
+        raise RuntimeError("Use --add-dmg only for an already published release.")
+    existing = {asset["name"]: asset for asset in release["assets"]}
+    archive = directory / f"PHP-Switcher-{version}-arm64.zip"
+    image = archive.with_suffix(".dmg")
+    checksum = image.with_suffix(".dmg.sha256")
+    if image.name in existing or checksum.name in existing:
+        raise RuntimeError("The DMG or its checksum already exists. Published assets will not be overwritten.")
+    published_archive = existing.get(archive.name)
+    if not published_archive or published_archive.get("digest") != "sha256:" + hashlib.sha256(archive.read_bytes()).hexdigest():
+        raise RuntimeError("The local ZIP must match the original published ZIP exactly.")
+    validate_dmg(image, archive)
+    expected_checksum = hashlib.sha256(image.read_bytes()).hexdigest() + "  " + image.name + "\n"
+    if checksum.read_text() != expected_checksum:
+        raise RuntimeError("The DMG checksum does not match. Create the DMG again.")
+    upload_asset(api, release["id"], image)
+    upload_asset(api, release["id"], checksum)
+    print(release["html_url"])
 
 
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--notes", type=Path, required=True, help="Markdown release notes file")
+    parser.add_argument("--notes", type=Path, help="Markdown release notes file")
     parser.add_argument("--publish", action="store_true", help="Publish after all assets are uploaded; otherwise leave a draft")
+    parser.add_argument("--add-dmg", action="store_true", help="Add a DMG of the original ZIP to the current version's published release")
     args = parser.parse_args()
+    if args.add_dmg and (args.notes or args.publish):
+        parser.error("--add-dmg cannot be combined with --notes or --publish")
+    if not args.add_dmg and not args.notes:
+        parser.error("--notes is required when creating a release")
     metadata = plistlib.loads((ROOT / "Resources/Info.plist").read_bytes())
     version, build = metadata["CFBundleShortVersionString"], metadata["CFBundleVersion"]
     if not re.fullmatch(r"\d+\.\d+\.\d+", version) or not build.isdecimal():
@@ -115,6 +197,9 @@ def main():
     if not remote or remote[0] != revision:
         raise RuntimeError("Push the release commit to origin/main before publishing.")
     directory = ROOT / "build/releases" / version
+    if args.add_dmg:
+        add_dmg_to_release(directory, version)
+        return
     if (directory / "SOURCE_REVISION").read_text().strip() != revision:
         raise RuntimeError("Release artifacts are stale. Run Scripts/prepare_release.sh again.")
     assets = validate_artifacts(directory, version, build, metadata["SUPublicEDKey"])
@@ -129,11 +214,7 @@ def main():
     release_id = release["id"]
     print(f"Created draft release {release_id} for {revision}.", flush=True)
     for asset in assets:
-        uploaded = api.request("POST", f"/releases/{release_id}/assets", asset=asset)
-        expected_digest = "sha256:" + hashlib.sha256(asset.read_bytes()).hexdigest()
-        if uploaded["size"] != asset.stat().st_size or uploaded.get("digest") != expected_digest:
-            raise RuntimeError("Uploaded asset verification failed; release remains a draft.")
-        print(f"Uploaded and verified {asset.name}.", flush=True)
+        upload_asset(api, release_id, asset)
     if args.publish:
         release = api.request("PATCH", f"/releases/{release_id}", {"draft": False, "make_latest": "true"})
     print(release["html_url"])
