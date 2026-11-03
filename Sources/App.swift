@@ -394,15 +394,12 @@ struct SwitcherView: View {
 
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
-            HStack(alignment: .top, spacing: 16) {
+            HStack(alignment: .center, spacing: 16) {
                 Image(systemName: "chevron.left.forwardslash.chevron.right")
                     .font(.system(size: 27, weight: .semibold)).foregroundStyle(.white)
                     .frame(width: 60, height: 60)
                     .background(LinearGradient(colors: [accent, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing), in: RoundedRectangle(cornerRadius: 16))
-                VStack(alignment: .leading, spacing: 4) {
-                    Text("PHP Switcher").font(.system(size: 26, weight: .bold, design: .rounded))
-                    Text(L("Twoje wersje PHP. Jedno kliknięcie.")).font(.system(size: 13)).foregroundStyle(.secondary)
-                }.padding(.top, 4)
+                Text("PHP Switcher").font(.system(size: 26, weight: .bold, design: .rounded))
                 Spacer()
                 Button { store.refresh() } label: { Image(systemName: "arrow.clockwise") }
                     .help(L("Odśwież zainstalowane wersje")).disabled(store.busy)

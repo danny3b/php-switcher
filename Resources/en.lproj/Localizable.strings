@@ -120,7 +120,6 @@
 "Podaj pełną wersję PHP 8.3, 8.4 lub 8.5, np. 8.4.27." = "Enter a full PHP 8.3, 8.4 or 8.5 version, e.g. 8.4.27.";
 "Brakuje instalatora w pakiecie aplikacji." = "The installer is missing from the application bundle.";
 "Instalacja anulowana. Aktywna wersja PHP pozostała bez zmian." = "Installation cancelled. The active PHP version is unchanged.";
-"Twoje wersje PHP. Jedno kliknięcie." = "Your PHP versions. One click.";
 "Odśwież zainstalowane wersje" = "Refresh installed versions";
 "Wybierz wersję PHP" = "Choose a PHP version";
 "Aktywne" = "Active";

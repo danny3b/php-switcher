@@ -97,8 +97,6 @@ struct AboutView: View {
                 Text("PHP Switcher").font(.system(size: 30, weight: .bold, design: .rounded))
                 Text(L("Wersja {0} ({1})", version, build)).font(.system(size: 12)).foregroundStyle(.secondary)
             }
-            Text(L("Twoje wersje PHP. Jedno kliknięcie."))
-                .font(.system(size: 17, weight: .medium))
             Text(L("Natywna aplikacja macOS do zarządzania wersjami PHP w terminalu, instalowania wydań i edycji konfiguracji php.ini."))
                 .multilineTextAlignment(.center).foregroundStyle(.secondary).frame(maxWidth: 460)
             VStack(spacing: 8) {
