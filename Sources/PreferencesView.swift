@@ -41,6 +41,7 @@ struct AppSettingsView: View {
     @ObservedObject var preferences: AppPreferences
 
     var body: some View {
+        ScrollView {
         VStack(alignment: .leading, spacing: 22) {
             Label(L("Ustawienia programu"), systemImage: "gearshape")
                 .font(.system(size: 26, weight: .bold, design: .rounded))
@@ -79,8 +80,9 @@ struct AppSettingsView: View {
                         .font(.system(size: 12)).foregroundStyle(.red).textSelection(.enabled)
                 }
             }.padding(20).background(Color(nsColor: .controlBackgroundColor), in: RoundedRectangle(cornerRadius: 12))
-            Spacer()
+            AppUpdateView()
         }.padding(28).frame(maxWidth: .infinity, maxHeight: .infinity, alignment: .topLeading)
+        }
             .onAppear { preferences.refreshLoginStatus() }
     }
 }

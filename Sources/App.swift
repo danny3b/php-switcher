@@ -103,7 +103,8 @@ struct InstallProgress: Decodable {
     var logHandle: FileHandle?
     var jobStatus = ""
     var hasInstallerProgress = false
-    var busy: Bool { loading || working || installing != nil || configuration != nil }
+    var canRestartForUpdate: Bool { !loading && !working && installing == nil && configuration == nil }
+    var busy: Bool { !canRestartForUpdate || AppUpdates.shared.phase == .installing }
     var active: PHPInstallation? { installations.first { $0.root == activeRoot } }
     var missing: [String] { suggested.filter { version in !installations.contains { $0.version == version } } }
 
@@ -558,6 +559,7 @@ struct SwitcherView: View {
     var statusItem: NSStatusItem?
     var subscription: AnyCancellable?
     var preferencesSubscription: AnyCancellable?
+    var updateSubscription: AnyCancellable?
     var wakeObserver: NSObjectProtocol?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -571,6 +573,12 @@ struct SwitcherView: View {
         preferencesSubscription = AppPreferences.shared.objectWillChange.sink { [weak self] _ in
             DispatchQueue.main.async { self?.updateMenu() }
         }
+        updateSubscription = AppUpdates.shared.objectWillChange.sink { [weak self] _ in
+            DispatchQueue.main.async { self?.updateMenu(); SwitcherStore.shared.objectWillChange.send() }
+        }
+        AppUpdates.shared.canInstall = { SwitcherStore.shared.canRestartForUpdate }
+        AppUpdates.shared.revealSettings = { [weak self] in self?.showSettings() }
+        AppUpdates.shared.start()
         updateMenu()
         SwitcherStore.shared.startSecurityChecks()
         SwitcherStore.shared.refresh()
@@ -606,6 +614,8 @@ struct SwitcherView: View {
         settings.target = self; menu.addItem(settings)
         let about = NSMenuItem(title: L("O PHP Switcher"), action: #selector(showAbout), keyEquivalent: "")
         about.target = self; menu.addItem(about)
+        let update = NSMenuItem(title: AppUpdates.shared.phase == .ready ? L("Aktualizacja gotowa do instalacji…") : L("Sprawdź aktualizacje aplikacji…"), action: #selector(showUpdates), keyEquivalent: "")
+        update.target = self; menu.addItem(update)
         let quit = NSMenuItem(title: L("Zakończ"), action: #selector(quitApp), keyEquivalent: "q")
         quit.target = self; menu.addItem(quit)
         statusItem?.menu = menu
@@ -620,6 +630,7 @@ struct SwitcherView: View {
     @objc func showSecurity() { SwitcherStore.shared.selectTab(.versions); SwitcherStore.shared.securityDetails = true; showWindow() }
     @objc func showSettings() { SwitcherStore.shared.selectTab(.settings); showWindow() }
     @objc func showAbout() { SwitcherStore.shared.selectTab(.about); showWindow() }
+    @objc func showUpdates() { showSettings(); AppUpdates.shared.check() }
     @objc func checkSecurity() { SwitcherStore.shared.checkSecurity(force: true) }
     func applicationDidBecomeActive(_ notification: Notification) {
         AppPreferences.shared.refreshLoginStatus()
@@ -631,13 +642,18 @@ struct SwitcherView: View {
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
         if SwitcherStore.shared.working { return .terminateCancel }
         if let editor = SwitcherStore.shared.configuration, !editor.canClose() { return .terminateCancel }
-        guard SwitcherStore.shared.installing != nil else { return .terminateNow }
-        let alert = NSAlert()
-        alert.messageText = L("Trwa instalowanie PHP")
-        alert.informativeText = L("Zamknięcie aplikacji anuluje instalację. Aktywna wersja PHP pozostanie bez zmian.")
-        alert.addButton(withTitle: L("Pozostań")); alert.addButton(withTitle: L("Anuluj instalację i zamknij"))
-        if alert.runModal() == .alertSecondButtonReturn { SwitcherStore.shared.cancelInstall(); return .terminateNow }
-        return .terminateCancel
+        if SwitcherStore.shared.installing != nil {
+            let alert = NSAlert()
+            alert.messageText = L("Trwa instalowanie PHP")
+            alert.informativeText = L("Zamknięcie aplikacji anuluje instalację. Aktywna wersja PHP pozostanie bez zmian.")
+            alert.addButton(withTitle: L("Pozostań")); alert.addButton(withTitle: L("Anuluj instalację i zamknij"))
+            guard alert.runModal() == .alertSecondButtonReturn else { return .terminateCancel }
+            SwitcherStore.shared.cancelInstall()
+        }
+        if AppUpdates.shared.prepareForTermination(completion: {
+            DispatchQueue.main.async { NSApp.reply(toApplicationShouldTerminate: true) }
+        }) { return .terminateLater }
+        return .terminateNow
     }
     func applicationShouldHandleReopen(_ sender: NSApplication, hasVisibleWindows flag: Bool) -> Bool { showWindow(); return true }
 }
@@ -655,6 +671,9 @@ struct SwitcherView: View {
                 }
                 CommandGroup(replacing: .appInfo) {
                     Button(L("O PHP Switcher")) { delegate.showAbout() }
+                }
+                CommandGroup(after: .appInfo) {
+                    Button(L("Sprawdź aktualizacje aplikacji…")) { delegate.showUpdates() }
                 }
             }
     }
