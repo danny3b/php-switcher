@@ -16,10 +16,15 @@ struct DatabaseProgress: Decodable {
 @MainActor final class DatabaseStore: ObservableObject {
     static let shared = DatabaseStore()
     private let defaults: UserDefaults
-    @Published var port: String { didSet { connectionChanged(); defaults.set(port, forKey: "mysqlPort") } }
-    @Published var user: String { didSet { connectionChanged(); defaults.set(user, forKey: "mysqlUser") } }
-    @Published var password = "" { didSet { connectionChanged() } }
+    private let passwordStore: DatabasePasswordStoring
+    @Published var port: String { didSet { accountChanged(); defaults.set(port, forKey: "mysqlPort") } }
+    @Published var user: String { didSet { accountChanged(); defaults.set(user, forKey: "mysqlUser") } }
+    @Published var password = "" { didSet { connectionChanged(); verifiedCredential = nil } }
     @Published var clientPath: String { didSet { connectionChanged(); defaults.set(clientPath, forKey: "mysqlClientPath") } }
+    @Published private(set) var rememberPassword: Bool
+    @Published private(set) var credentialError: String?
+    @Published private(set) var passwordReadFailed = false
+    @Published private(set) var storedCredential: DatabaseCredential?
     @Published var createBackup = true
     @Published var selectedDatabase = ""
     @Published private(set) var sqlFile: URL?
@@ -37,13 +42,86 @@ struct DatabaseProgress: Decodable {
     private var directory: URL?
     private var stateURL: URL?
     private var errorHandle: FileHandle?
+    private var credentialsLoaded = false
+    private var passwordAccount: DatabaseCredentialAccount?
+    private var verifiedCredential: DatabaseCredential?
+    private var activeCredential: DatabaseCredential?
 
-    init(defaults: UserDefaults = .standard) {
+    init(defaults: UserDefaults = .standard, passwordStore: DatabasePasswordStoring = DatabaseKeychain()) {
         self.defaults = defaults
+        self.passwordStore = passwordStore
         let detected = Self.detectClient()
         clientPath = defaults.string(forKey: "mysqlClientPath") ?? detected ?? ""
         port = defaults.string(forKey: "mysqlPort") ?? (detected?.hasPrefix("/Applications/MAMP/") == true ? "8889" : "3306")
         user = defaults.string(forKey: "mysqlUser") ?? "root"
+        rememberPassword = defaults.object(forKey: "rememberMySQLPassword") as? Bool ?? true
+    }
+
+    var credentialAccount: DatabaseCredentialAccount? { DatabaseCredentialAccount(port: port, user: user) }
+    var passwordIsSaved: Bool {
+        rememberPassword && storedCredential?.account == credentialAccount && storedCredential?.password == password
+    }
+
+    private func accountChanged() {
+        connectionChanged()
+        guard credentialAccount != passwordAccount else { return }
+        verifiedCredential = nil
+        if credentialsLoaded { restorePassword(force: true) }
+        else { password = "" }
+    }
+
+    /// Load only when the Databases tab is used, not during unrelated PHP work.
+    func restorePassword(force: Bool = false) {
+        guard !isBusy, force || !credentialsLoaded || passwordAccount != credentialAccount else { return }
+        credentialsLoaded = true
+        passwordAccount = credentialAccount
+        storedCredential = nil; credentialError = nil; passwordReadFailed = false
+        password = ""
+        guard rememberPassword, let account = credentialAccount else { return }
+        do {
+            if let saved = try passwordStore.password(for: account) {
+                password = saved
+                storedCredential = DatabaseCredential(account: account, password: saved)
+            }
+        } catch {
+            passwordReadFailed = true
+            credentialError = L("Nie udało się odczytać hasła z Pęku kluczy: {0}", error.localizedDescription)
+        }
+    }
+
+    func setRememberPassword(_ enabled: Bool) {
+        guard !isBusy, enabled != rememberPassword else { return }
+        credentialError = nil; passwordReadFailed = false
+        if !enabled, let account = credentialAccount {
+            do { try passwordStore.removePassword(for: account) }
+            catch {
+                credentialError = L("Nie udało się usunąć hasła z Pęku kluczy: {0}", error.localizedDescription)
+                return
+            }
+            storedCredential = nil
+        }
+        rememberPassword = enabled
+        defaults.set(enabled, forKey: "rememberMySQLPassword")
+        if enabled {
+            if let verifiedCredential { recordSuccessfulConnection(verifiedCredential) }
+            else if password.isEmpty { restorePassword(force: true) }
+        }
+    }
+
+    // Called only for a successful connection, using the credentials actually
+    // sent to the helper. A stale result must not save newly edited input.
+    func recordSuccessfulConnection(_ credential: DatabaseCredential) {
+        guard credential.account == credentialAccount, credential.password == password else { return }
+        verifiedCredential = credential
+        guard rememberPassword else { return }
+        credentialError = nil; passwordReadFailed = false
+        guard storedCredential != credential else { return }
+        do {
+            try passwordStore.save(credential)
+            storedCredential = credential
+        } catch {
+            credentialError = L("Połączenie działa, ale nie udało się zapisać hasła w Pęku kluczy: {0}", error.localizedDescription)
+        }
     }
 
     static func detectClient() -> String? {
@@ -138,6 +216,7 @@ struct DatabaseProgress: Decodable {
             task.standardOutput = FileHandle.nullDevice
             task.standardError = errorHandle
             task.terminationHandler = { _ in DispatchQueue.main.async { self.finish() } }
+            activeCredential = credentialAccount.map { DatabaseCredential(account: $0, password: password) }
             error = nil; state = nil; databaseMayBePartial = false; cancelling = false
             isReplacing = operation == "replace"; isBusy = true; process = task
             try task.run()
@@ -168,6 +247,7 @@ struct DatabaseProgress: Decodable {
                 databases = state?.databases ?? []
                 serverID = state?.serverID
                 selectedDatabase = ""
+                if let activeCredential { recordSuccessfulConnection(activeCredential) }
             }
         } else if state?.status != "cancelled" {
             error = state?.status == "failed" ? message : L("Operacja MySQL została przerwana. Sprawdź stan wybranej bazy przed ponowną próbą.")
@@ -181,6 +261,7 @@ struct DatabaseProgress: Decodable {
         try? errorHandle?.close(); errorHandle = nil
         if let directory { try? FileManager.default.removeItem(at: directory) }
         directory = nil; stateURL = nil; process = nil
+        activeCredential = nil
         isBusy = false; isReplacing = false; cancelling = false
     }
 

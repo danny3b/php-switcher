@@ -26,8 +26,18 @@ struct DatabasesView: View {
                         field(L("Użytkownik")) { TextField("root", text: $database.user) }
                         field(L("Hasło")) { SecureField(L("Hasło"), text: $database.password) }
                     }.textFieldStyle(.roundedBorder)
-                    Text(L("Hasło jest pamiętane tylko do zamknięcia aplikacji."))
+                    Toggle(L("Zapamiętaj hasło w Pęku kluczy"), isOn: Binding(get: { database.rememberPassword }, set: { database.setRememberPassword($0) }))
+                        .toggleStyle(.checkbox)
+                    Text(database.rememberPassword
+                         ? (database.passwordIsSaved ? L("Hasło jest zapisane dla tego portu i użytkownika.") : L("Hasło zostanie zapisane po udanym połączeniu z MySQL."))
+                         : L("Hasło jest pamiętane tylko do zamknięcia aplikacji."))
                         .font(.caption).foregroundStyle(.secondary)
+                    if let issue = database.credentialError {
+                        Text(issue).font(.caption).foregroundStyle(.red).fixedSize(horizontal: false, vertical: true)
+                        if database.passwordReadFailed {
+                            Button(L("Ponów odczyt hasła")) { database.restorePassword(force: true) }.buttonStyle(.link)
+                        }
+                    }
                     HStack {
                         VStack(alignment: .leading, spacing: 4) {
                             Text(L("Klient MySQL")).font(.caption).foregroundStyle(.secondary)
@@ -109,6 +119,7 @@ struct DatabasesView: View {
             }.padding(28)
         }
         .sheet(isPresented: $confirming) { DatabaseReplacementConfirmation(database: database) }
+        .onAppear { database.restorePassword() }
     }
 
     private func field<Content: View>(_ title: String, width: CGFloat? = nil, @ViewBuilder content: () -> Content) -> some View {

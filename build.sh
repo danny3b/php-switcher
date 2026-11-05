@@ -8,7 +8,7 @@ mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources" "$APP/Contents/Framewor
 /usr/bin/xcrun swiftc -swift-version 5 -parse-as-library -O -target arm64-apple-macosx14.0 \
   -module-cache-path "$BUILD/module-cache" Sources/*.swift \
   -F "$SPARKLE_ROOT" -framework Sparkle -Xlinker -rpath -Xlinker @executable_path/../Frameworks \
-  -framework SwiftUI -framework AppKit -framework ServiceManagement -o "$APP/Contents/MacOS/DevZbik"
+  -framework SwiftUI -framework AppKit -framework ServiceManagement -framework Security -o "$APP/Contents/MacOS/DevZbik"
 /usr/bin/ditto "$SPARKLE_ROOT/Sparkle.framework" "$APP/Contents/Frameworks/Sparkle.framework"
 cp "$SPARKLE_ROOT/LICENSE" "$APP/Contents/Resources/Sparkle-LICENSE.txt"
 cp Resources/install_php.py "$APP/Contents/Resources/"
