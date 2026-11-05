@@ -377,3 +377,10 @@
 "Natywna aplikacja macOS do zarządzania PHP i odświeżania lokalnych baz MySQL." = "Eine native macOS-App zum Verwalten von PHP und Aktualisieren lokaler MySQL-Datenbanken.";
 "Zakończ bieżącą operację i zapisz lub zamknij edytor ustawień przed aktualizacją." = "Beende den laufenden Vorgang und speichere oder schließe den Einstellungseditor vor dem Update.";
 "Inna operacja zastępuje tę bazę. Poczekaj na jej zakończenie." = "Ein anderer Vorgang ersetzt diese Datenbank. Warte, bis er abgeschlossen ist.";
+"Zapamiętaj hasło w Pęku kluczy" = "Passwort im Schlüsselbund speichern";
+"Hasło jest zapisane dla tego portu i użytkownika." = "Das Passwort ist für diesen Port und Benutzer gespeichert.";
+"Hasło zostanie zapisane po udanym połączeniu z MySQL." = "Das Passwort wird nach einer erfolgreichen MySQL-Verbindung gespeichert.";
+"Ponów odczyt hasła" = "Passwort erneut laden";
+"Nie udało się odczytać hasła z Pęku kluczy: {0}" = "Das Passwort konnte nicht aus dem Schlüsselbund gelesen werden: {0}";
+"Nie udało się usunąć hasła z Pęku kluczy: {0}" = "Das Passwort konnte nicht aus dem Schlüsselbund entfernt werden: {0}";
+"Połączenie działa, ale nie udało się zapisać hasła w Pęku kluczy: {0}" = "Die Verbindung funktioniert, aber das Passwort konnte nicht im Schlüsselbund gespeichert werden: {0}";

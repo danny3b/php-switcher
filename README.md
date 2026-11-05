@@ -90,7 +90,9 @@ Use a trusted UTF-8 table/data export from `mysqldump` or phpMyAdmin. For exampl
 
 Clearing and importing is **not transactional**. If an import fails or is cancelled after clearing begins, the selected database may be empty or incomplete. The app reports this and keeps a completed backup for recovery; it does not claim to roll back. Progress follows bytes read and completes only when the MySQL client exits successfully. Application quit and update installation are blocked while a database operation runs. Cancel from the Databases tab when necessary.
 
-The password is retained in app memory only for the session and is never saved in preferences or placed in process arguments. The helper receives it over stdin and uses a temporary option file with mode `0600` in a private directory, removed when the operation ends. Existing MySQL option and login-path files are isolated from these operations. The client runs in binary batch mode with local file loading and reconnect disabled. See MySQL's [client options](https://dev.mysql.com/doc/refman/8.4/en/mysql-command-options.html) and [option-file handling](https://dev.mysql.com/doc/refman/8.0/en/option-files.html).
+**Remember password in Keychain** is enabled by default. Enter the password once and connect successfully to save it in the local macOS login Keychain. Opening **Databases** restores the saved password for the current port and user, including after restarting the app. Failed connections never replace a saved password. Turning remembering off removes the current account's saved password and keeps the field available for the current session; passwords for other accounts remain in Keychain but are not loaded while remembering is off. Keychain access failures appear separately from connection errors, with a retry action for failed reads. macOS may request Keychain access permission, including after an app update because these builds use ad hoc signing.
+
+Passwords are never saved in preferences or placed in process arguments. The helper receives the password over stdin and uses a temporary option file with mode `0600` in a private directory, removed when the operation ends. Existing MySQL option and login-path files are isolated from these operations. The client runs in binary batch mode with local file loading and reconnect disabled. See MySQL's [client options](https://dev.mysql.com/doc/refman/8.4/en/mysql-command-options.html) and [option-file handling](https://dev.mysql.com/doc/refman/8.0/en/option-files.html).
 
 ## Removing PHP installations
 
@@ -199,6 +201,7 @@ Use English by default for documentation, development instructions, code comment
 | `Sources/AppUpdates.swift` | Sparkle scheduling, download state, and explicit installation |
 | `Sources/AppUpdateView.swift` | Application update controls and progress |
 | `Sources/Databases.swift` | Local MySQL connection preferences and background operation state |
+| `Sources/DatabaseCredentials.swift` | MySQL account identity and local macOS Keychain password storage |
 | `Sources/DatabasesView.swift` | Database selection, SQL file selection, and replacement confirmation |
 | `Sources/Localization.swift` | Language selection and string interpolation |
 | `Resources/{en,de,fr,it}.lproj/Localizable.strings` | English, German, French, and Italian UI translations |
@@ -239,7 +242,10 @@ build/configuration-tests
 xcrun swiftc -swift-version 5 -parse-as-library -module-cache-path build/module-cache Sources/Localization.swift Sources/Core.swift Sources/Security.swift Tests/SecurityTests.swift -o build/security-tests
 build/security-tests
 
-xcrun swiftc -O -DTESTING -swift-version 5 -parse-as-library -module-cache-path build/module-cache -F build/dependencies/Sparkle-2.10.1 -framework Sparkle -Xlinker -rpath -Xlinker "$PWD/build/dependencies/Sparkle-2.10.1" -framework SwiftUI -framework AppKit -framework ServiceManagement Sources/*.swift Tests/NavigationPerformanceTests.swift -o build/navigation-performance-tests
+xcrun swiftc -O -DTESTING -swift-version 5 -parse-as-library -module-cache-path build/module-cache -F build/dependencies/Sparkle-2.10.1 -framework Sparkle -Xlinker -rpath -Xlinker "$PWD/build/dependencies/Sparkle-2.10.1" -framework SwiftUI -framework AppKit -framework ServiceManagement -framework Security Sources/*.swift Tests/DatabaseCredentialsTests.swift -o build/database-credentials-tests
+build/database-credentials-tests
+
+xcrun swiftc -O -DTESTING -swift-version 5 -parse-as-library -module-cache-path build/module-cache -F build/dependencies/Sparkle-2.10.1 -framework Sparkle -Xlinker -rpath -Xlinker "$PWD/build/dependencies/Sparkle-2.10.1" -framework SwiftUI -framework AppKit -framework ServiceManagement -framework Security Sources/*.swift Tests/NavigationPerformanceTests.swift -o build/navigation-performance-tests
 build/navigation-performance-tests
 ```
 
@@ -248,6 +254,8 @@ Tests use isolated temporary directories and do not switch the user's real PHP i
 App update tests cover automatic and manual downloads, progress, persistence, explicit installation, restart blocking, cancellation before normal quit, and offline/incompatible-release handling. Release publishing validates archive metadata, checksums, signatures, and the source revision before uploading assets.
 
 Database unit tests use temporary files and simulated clients. They cover SQL strings and executable comments, source database headers, rejection before clearing, backup failures, server changes, failed imports, password handling, and cancellation. They never connect to an existing MySQL server.
+
+Credential tests use isolated preferences and an in-memory password store, without accessing the user's Keychain. They cover restoration after restart, account isolation, successful-authentication-only saving, stale results, opt-out and removal, empty passwords, and read/write/delete failures.
 
 Navigation tests use fixture installations and count security evaluations to ensure tab changes never rerun advisory analysis. They also verify invalidation on changed versions, sources, active installations, removals, and new advisory data. The `TESTING` flag replaces only the app entry point with the test runner; it does not change the store's implementation.
 
