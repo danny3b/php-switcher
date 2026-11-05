@@ -33,6 +33,19 @@ To create a DMG from that build, run `bash Scripts/create_dmg.sh`. The image and
 
 The bundled build script targets Apple Silicon. The current builds are ad hoc signed, without Apple Developer ID notarization; macOS may require approval when first opening a downloaded copy. Sparkle verifies updates with a separate Ed25519 release signature.
 
+### Application icon
+
+`Resources/AppIcon.png` is the original artwork. Regenerate the checked-in macOS icon after changing it:
+
+```sh
+mkdir -p build
+xcrun swift -module-cache-path build/module-cache Resources/MakeIcon.swift Resources/AppIcon.png build/AppIcon.iconset
+iconutil -c icns build/AppIcon.iconset -o Resources/AppIcon.icns
+bash build.sh
+```
+
+The generator supplies all standard and Retina sizes, keeping the artwork within rounded corners and transparent margins. The main window and About view use the bundled application icon.
+
 ## Usage
 
 Click **Use** to select a PHP version for subsequent `php` commands. You can also switch versions from the PHP menu in the macOS menu bar. **Install** downloads and builds the selected release. **Other version…** accepts an exact release number. Installing a release does not activate it automatically.

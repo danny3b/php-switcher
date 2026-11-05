@@ -412,10 +412,10 @@ struct SwitcherView: View {
     var body: some View {
         VStack(alignment: .leading, spacing: 0) {
             HStack(alignment: .center, spacing: 16) {
-                Image(systemName: "chevron.left.forwardslash.chevron.right")
-                    .font(.system(size: 27, weight: .semibold)).foregroundStyle(.white)
+                Image(nsImage: NSApplication.shared.applicationIconImage)
+                    .resizable().interpolation(.high)
                     .frame(width: 60, height: 60)
-                    .background(LinearGradient(colors: [accent, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing), in: RoundedRectangle(cornerRadius: 16))
+                    .accessibilityHidden(true)
                 Text("DevŻbik").font(.system(size: 26, weight: .bold, design: .rounded))
                 Spacer()
                 Button { store.refresh() } label: { Image(systemName: "arrow.clockwise") }

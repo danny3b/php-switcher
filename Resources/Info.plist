@@ -7,8 +7,8 @@
 <key>CFBundleExecutable</key><string>DevZbik</string>
 <key>CFBundleIconFile</key><string>AppIcon</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>1.8.0</string>
-<key>CFBundleVersion</key><string>14</string>
+<key>CFBundleShortVersionString</key><string>1.8.1</string>
+<key>CFBundleVersion</key><string>15</string>
 <key>SUFeedURL</key><string>https://github.com/danny3b/php-switcher/releases/latest/download/appcast.xml</string>
 <key>SUPublicEDKey</key><string>Rnqu/dce3Jgjm5jMJkiaGngVdCtsFjy0J7EpiR02KIU=</string>
 <key>SUEnableAutomaticChecks</key><true/>
