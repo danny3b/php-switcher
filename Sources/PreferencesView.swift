@@ -48,7 +48,7 @@ struct AppSettingsView: View {
         VStack(alignment: .leading, spacing: 22) {
             Label(L("Ustawienia programu"), systemImage: "gearshape")
                 .font(.system(size: 26, weight: .bold, design: .rounded))
-            Text(L("Dostosuj PHP Switcher do siebie."))
+            Text(L("Dostosuj DevŻbik do siebie."))
                 .foregroundStyle(.secondary)
             VStack(alignment: .leading, spacing: 16) {
                 HStack {
@@ -65,7 +65,7 @@ struct AppSettingsView: View {
                 Toggle(isOn: Binding(get: { preferences.launchAtLogin }, set: { preferences.setLaunchAtLogin($0) })) {
                     Label(L("Uruchamiaj przy starcie systemu"), systemImage: "power")
                 }.toggleStyle(.switch)
-                Text(L("Otwieraj PHP Switcher automatycznie po zalogowaniu do macOS."))
+                Text(L("Otwieraj DevŻbik automatycznie po zalogowaniu do macOS."))
                     .font(.system(size: 12)).foregroundStyle(.secondary)
                 if preferences.loginStatus == .requiresApproval {
                     Label(L("Autostart czeka na zgodę w Ustawieniach systemowych macOS."), systemImage: "exclamationmark.triangle")
@@ -99,7 +99,7 @@ struct AboutView: View {
             Image(nsImage: NSApplication.shared.applicationIconImage)
                 .resizable().frame(width: 100, height: 100)
             VStack(spacing: 7) {
-                Text("PHP Switcher").font(.system(size: 30, weight: .bold, design: .rounded))
+                Text("DevŻbik").font(.system(size: 30, weight: .bold, design: .rounded))
                 Text(L("Wersja {0} ({1})", version, build)).font(.system(size: 12)).foregroundStyle(.secondary)
             }
             Text(L("Natywna aplikacja macOS do zarządzania wersjami PHP w terminalu, instalowania wydań i edycji konfiguracji php.ini."))

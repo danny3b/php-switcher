@@ -198,7 +198,7 @@ class Installer:
                  Path("/opt/homebrew/opt/php@8.3"), self.root / "current"]
         base = next((p.resolve() for p in bases if (p / "bin/php-config").is_file()), None)
         if not base:
-            raise InstallError("Brak bazowego PHP i bibliotek do kompilacji. Wymagane jest PHP z Homebrew lub wcześniejsza instalacja PHP Switcher.")
+            raise InstallError("Brak bazowego PHP i bibliotek do kompilacji. Wymagane jest PHP z Homebrew lub wcześniejsza instalacja DevŻbik.")
         raw = self.run([base / "bin/php-config", "--configure-options"], capture=True)
         binary_info = self.run(["/usr/bin/file", base / "bin/php"], capture=True)
         arch = "x86_64" if "x86_64" in binary_info and "arm64" not in binary_info else "arm64"
@@ -281,7 +281,7 @@ class Installer:
             obsolete = r"^\s*(?:report_memleaks|intl\.error_level)\s*=.*$"
             ini = re.sub(obsolete, "", ini, flags=re.M)
             extra_ini = re.sub(obsolete, "", extra_ini, flags=re.M)
-        ini += '\n\n; PHP Switcher\nextension_dir = "' + str(extension_dir) + '"\n'
+        ini += '\n\n; DevŻbik\nextension_dir = "' + str(extension_dir) + '"\n'
         opcache = extension_dir / "opcache.so"
         if opcache.exists():
             ini += 'zend_extension="' + str(opcache) + '"\n'
@@ -323,7 +323,7 @@ echo 'JIT OK';
         self.run([php, "-d", "opcache.enable_cli=1", "-d", "opcache.file_update_protection=0",
                   "-d", "opcache.jit=tracing", "-d", "opcache.jit_hot_func=1", "-d",
                   "opcache.jit_hot_loop=1", "-d", "opcache.jit_buffer_size=16M", jit_test])
-        (self.prefix / "BUILD-INFO.txt").write_text("PHP Switcher\nVersion: " + self.version + "\nSource: https://www.php.net/distributions/" + filename + "\nSHA256: " + source["sha256"] + "\nArchitecture: " + arch + "\nLog: " + str(self.log_path) + "\nStandalone CLI; web services and current symlink are unchanged.\n")
+        (self.prefix / "BUILD-INFO.txt").write_text("DevŻbik\nVersion: " + self.version + "\nSource: https://www.php.net/distributions/" + filename + "\nSHA256: " + source["sha256"] + "\nArchitecture: " + arch + "\nLog: " + str(self.log_path) + "\nStandalone CLI; web services and current symlink are unchanged.\n")
         (self.prefix / ".installing").unlink()
         self.created_prefix = False
         self.progress(1, Message("PHP {0} jest gotowe. Kliknij Użyj, aby je włączyć.", self.version), "complete")

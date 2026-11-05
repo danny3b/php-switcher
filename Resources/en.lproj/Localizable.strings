@@ -4,7 +4,7 @@
 "Źródła: php.net i komunikaty zespołu PHP na GitHub." = "Sources: php.net and PHP team advisories on GitHub.";
 "Ukryj szczegóły" = "Hide details";
 "Szczegóły" = "Details";
-"Sprawdzanie działa, gdy aplikacja jest uruchomiona, także w pasku menu. Zakres: wersje PHP Switcher, dodane ręcznie oraz aktywne PHP w terminalu." = "Checks run while the app is open, including in the menu bar. Scope: PHP Switcher installations, manually added installations, and the active PHP in Terminal.";
+"Sprawdzanie działa, gdy aplikacja jest uruchomiona, także w pasku menu. Zakres: wersje DevŻbik, dodane ręcznie oraz aktywne PHP w terminalu." = "Checks run while the app is open, including in the menu bar. Scope: DevŻbik installations, manually added installations, and the active PHP in Terminal.";
 "Poniżej ostatni zapisany wynik — może nie uwzględniać nowych publikacji." = "The last saved result is shown below and may not include recent publications.";
 "Komunikaty bezpieczeństwa ↗" = "Security advisories ↗";
 "Ocena według numeru PHP i komunikatów projektu; nie jest audytem bibliotek ani rozszerzeń PECL. Warunki podatności opisano w komunikacie." = "Based on PHP version numbers and project advisories; this is not an audit of libraries or PECL extensions. See each advisory for vulnerability conditions.";
@@ -42,7 +42,7 @@
 "Ta wersja PHP nie ma zarejestrowanej usługi PHP-FPM. Możesz przejść do usuwania przyciskiem Kosza." = "This PHP version has no registered PHP-FPM service. Use the Trash button to proceed with removal.";
 "To jest aktywne PHP. Najpierw wybierz inną wersję przyciskiem Użyj." = "This is the active PHP. Select another version with Use first.";
 "Można usunąć wyłącznie katalog instalacji; dowiązania nie są usuwane." = "Only installation directories can be removed; symbolic links are not removed.";
-"Ten katalog nie jest wersją zarządzaną przez PHP Switcher." = "This directory is not a version managed by PHP Switcher.";
+"Ten katalog nie jest wersją zarządzaną przez DevŻbik." = "This directory is not a version managed by DevŻbik.";
 "Tej instalacji nie ma już na liście dodanych katalogów. Odśwież listę." = "This installation is no longer in the list of added directories. Refresh the list.";
 "PHP {0} ma zarejestrowaną usługę PHP-FPM. Najpierw wybierz Zatrzymaj usługę w aplikacji, a potem ponów usuwanie." = "PHP {0} has a registered PHP-FPM service. Choose Stop service in the app first, then try removing it again.";
 "Tą instalacją zarządza {0}. Usuń ją w tym narzędziu." = "This installation is managed by {0}. Remove it using that tool.";
@@ -146,7 +146,7 @@
 "np. 8.5.12" = "e.g. 8.5.12";
 "PHP w terminalu" = "PHP in Terminal";
 "Sprawdź poprawki teraz" = "Check for fixes now";
-"Otwórz PHP Switcher…" = "Open PHP Switcher…";
+"Otwórz DevŻbik…" = "Open DevŻbik…";
 "Zakończ" = "Quit";
 "Zamknięcie aplikacji anuluje instalację. Aktywna wersja PHP pozostanie bez zmian." = "Closing the app will cancel the installation. The active PHP version will remain unchanged.";
 "Pozostań" = "Stay";
@@ -197,11 +197,11 @@
 "O programie" = "About";
 "Zakładka" = "Tab";
 "Ustawienia programu" = "App settings";
-"Dostosuj PHP Switcher do siebie." = "Make PHP Switcher your own.";
+"Dostosuj DevŻbik do siebie." = "Make DevŻbik your own.";
 "Język programu" = "App language";
 "Zmiana języka jest zapisywana automatycznie i działa od razu." = "The language is saved automatically and changes take effect immediately.";
 "Uruchamiaj przy starcie systemu" = "Launch at startup";
-"Otwieraj PHP Switcher automatycznie po zalogowaniu do macOS." = "Open PHP Switcher automatically when you log in to macOS.";
+"Otwieraj DevŻbik automatycznie po zalogowaniu do macOS." = "Open DevŻbik automatically when you log in to macOS.";
 "Autostart czeka na zgodę w Ustawieniach systemowych macOS." = "Launch at login requires approval in macOS System Settings.";
 "Otwórz ustawienia logowania" = "Open Login Items settings";
 "Anuluj autostart" = "Cancel launch at login";
@@ -244,7 +244,7 @@
 "Inna wersja…" = "Other version…";
 "Folder instalacji PHP" = "PHP installation folder";
 "Zainstaluj PHP" = "Install PHP";
-"PHP Switcher — aktywna wersja w terminalu" = "PHP Switcher — active version in Terminal";
+"DevŻbik — aktywna wersja w terminalu" = "DevŻbik — active version in Terminal";
 "Sprawdzanie…" = "Checking…";
 "Trwa instalowanie PHP" = "PHP installation is in progress";
 "Maksymalny rozmiar pliku" = "Maximum file size";
@@ -252,7 +252,7 @@
 "Liczba zmiennych formularza" = "Form variable limit";
 "Strefa czasowa" = "Time zone";
 "Ustawienia programu…" = "App settings…";
-"O PHP Switcher" = "About PHP Switcher";
+"O DevŻbik" = "About DevŻbik";
 "Archiwum zawiera niedozwoloną ścieżkę lub dowiązanie." = "The archive contains a prohibited path or link.";
 "Nieznany format konfiguracji źródeł PHP." = "Unknown PHP source configuration format.";
 "Instalacja anulowana." = "Installation cancelled.";
@@ -261,7 +261,7 @@
 "Inna instalacja PHP jest w toku. Poczekaj na jej zakończenie." = "Another PHP installation is in progress. Wait for it to finish.";
 "Ten katalog wersji już istnieje. Użyj Odśwież, aby ją wybrać." = "This version directory already exists. Use Refresh to select it.";
 "Sprawdzanie narzędzi i bibliotek…" = "Checking tools and libraries…";
-"Brak bazowego PHP i bibliotek do kompilacji. Wymagane jest PHP z Homebrew lub wcześniejsza instalacja PHP Switcher." = "Base PHP and build libraries are missing. Homebrew PHP or an earlier PHP Switcher installation is required.";
+"Brak bazowego PHP i bibliotek do kompilacji. Wymagane jest PHP z Homebrew lub wcześniejsza instalacja DevŻbik." = "Base PHP and build libraries are missing. Homebrew PHP or an earlier DevŻbik installation is required.";
 "Brakuje narzędzia: {0}" = "Missing tool: {0}";
 "Pobieranie informacji z php.net…" = "Fetching information from php.net…";
 "PHP.net nie potwierdziło tej wersji lub sumy kontrolnej." = "PHP.net did not confirm this version or checksum.";
@@ -284,7 +284,7 @@
 "Weryfikowanie i przygotowywanie aktualizacji…" = "Verifying and preparing the update…";
 "Wersja {0} jest gotowa do instalacji." = "Version {0} is ready to install.";
 "Instalowanie aktualizacji aplikacji…" = "Installing the app update…";
-"PHP Switcher jest aktualny." = "PHP Switcher is up to date.";
+"DevŻbik jest aktualny." = "DevŻbik is up to date.";
 "Nie udało się sprawdzić lub pobrać aktualizacji." = "Could not check for or download an update.";
 "Aktualizacje aplikacji" = "App updates";
 "Sprawdź aktualizacje" = "Check for updates";

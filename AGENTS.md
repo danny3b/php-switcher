@@ -12,7 +12,7 @@
 - `Sources/` contains the native SwiftUI/AppKit application and PHP management services.
 - `Resources/` contains bundle metadata, the application icon, localization resources, and the Python PHP installer.
 - `Tests/` contains standalone Swift test executables, Python unit tests, and security API fixtures.
-- `build.sh` builds and locally signs `build/PHP Switcher.app` for Apple Silicon and macOS 14 or later.
+- `build.sh` builds and locally signs `build/DevZbik.app` for Apple Silicon and macOS 14 or later.
 - See `README.md` for build commands, test commands, supported behavior, and installation paths.
 
 ## Development and verification

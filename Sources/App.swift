@@ -416,7 +416,7 @@ struct SwitcherView: View {
                     .font(.system(size: 27, weight: .semibold)).foregroundStyle(.white)
                     .frame(width: 60, height: 60)
                     .background(LinearGradient(colors: [accent, .indigo], startPoint: .topLeading, endPoint: .bottomTrailing), in: RoundedRectangle(cornerRadius: 16))
-                Text("PHP Switcher").font(.system(size: 26, weight: .bold, design: .rounded))
+                Text("DevŻbik").font(.system(size: 26, weight: .bold, design: .rounded))
                 Spacer()
                 Button { store.refresh() } label: { Image(systemName: "arrow.clockwise") }
                     .help(L("Odśwież zainstalowane wersje")).disabled(store.busy)
@@ -458,7 +458,7 @@ struct SwitcherView: View {
                                 .background(accent.opacity(item.root == store.activeRoot ? 0.12 : 0.04), in: RoundedRectangle(cornerRadius: 9))
                             VStack(alignment: .leading, spacing: 3) {
                                 Text("PHP " + item.version).font(.system(size: 14, weight: .semibold))
-                                Text(L(item.source)).font(.system(size: 11)).foregroundStyle(.secondary)
+                                Text(item.sourceName).font(.system(size: 11)).foregroundStyle(.secondary)
                             }.help(item.root)
                             Spacer()
                             Button { store.showConfiguration(item) } label: { Image(systemName: "slider.horizontal.3") }
@@ -596,7 +596,7 @@ struct SwitcherView: View {
         let item = NSStatusBar.system.statusItem(withLength: NSStatusItem.variableLength)
         statusItem = item
         item.button?.font = .monospacedSystemFont(ofSize: 11, weight: .semibold)
-        item.button?.toolTip = L("PHP Switcher — aktywna wersja w terminalu")
+        item.button?.toolTip = L("DevŻbik — aktywna wersja w terminalu")
         subscription = SwitcherStore.shared.objectWillChange.sink { [weak self] _ in
             self?.scheduleMenuUpdate()
         }
@@ -637,12 +637,12 @@ struct SwitcherView: View {
         guard state != lastMenuState else { return }
         lastMenuState = state
         statusItem?.button?.title = (store.criticalSecurity ? "⚠︎ " : "") + "PHP " + (store.active?.version ?? "–")
-        statusItem?.button?.toolTip = "PHP Switcher — " + store.securityTitle
+        statusItem?.button?.toolTip = "DevŻbik — " + store.securityTitle
         let menu = NSMenu()
         let title = NSMenuItem(title: L("PHP w terminalu"), action: nil, keyEquivalent: "")
         menu.addItem(title)
         for installation in store.installations where installation.version.compare("8.3.0", options: .numeric) != .orderedAscending {
-            let entry = NSMenuItem(title: "\(installation.version) · \(L(installation.source))", action: #selector(choose(_:)), keyEquivalent: "")
+            let entry = NSMenuItem(title: "\(installation.version) · \(installation.sourceName)", action: #selector(choose(_:)), keyEquivalent: "")
             entry.target = self; entry.representedObject = installation.root
             entry.state = installation.root == store.activeRoot ? .on : .off
             entry.isEnabled = !store.busy
@@ -654,11 +654,11 @@ struct SwitcherView: View {
         let check = NSMenuItem(title: store.securityChecking ? L("Sprawdzanie…") : L("Sprawdź poprawki teraz"), action: #selector(checkSecurity), keyEquivalent: "")
         check.target = self; check.isEnabled = !store.securityChecking && !store.loading; menu.addItem(check)
         menu.addItem(.separator())
-        let show = NSMenuItem(title: L("Otwórz PHP Switcher…"), action: #selector(showWindow), keyEquivalent: "")
+        let show = NSMenuItem(title: L("Otwórz DevŻbik…"), action: #selector(showWindow), keyEquivalent: "")
         show.target = self; menu.addItem(show)
         let settings = NSMenuItem(title: L("Ustawienia programu…"), action: #selector(showSettings), keyEquivalent: ",")
         settings.target = self; menu.addItem(settings)
-        let about = NSMenuItem(title: L("O PHP Switcher"), action: #selector(showAbout), keyEquivalent: "")
+        let about = NSMenuItem(title: L("O DevŻbik"), action: #selector(showAbout), keyEquivalent: "")
         about.target = self; menu.addItem(about)
         let update = NSMenuItem(title: AppUpdates.shared.phase == .ready ? L("Aktualizacja gotowa do instalacji…") : L("Sprawdź aktualizacje aplikacji…"), action: #selector(showUpdates), keyEquivalent: "")
         update.target = self; menu.addItem(update)
@@ -707,11 +707,11 @@ struct SwitcherView: View {
 #if !TESTING
 @main
 #endif
-struct PHPSwitcherApp: App {
+struct DevZbikApp: App {
     @NSApplicationDelegateAdaptor(AppDelegate.self) var delegate
     @ObservedObject private var preferences = AppPreferences.shared
     var body: some Scene {
-        Window("PHP Switcher", id: "main") { MainView() }
+        Window("DevŻbik", id: "main") { MainView() }
             .defaultSize(width: 740, height: 820)
             .windowStyle(.hiddenTitleBar)
             .commands {
@@ -719,7 +719,7 @@ struct PHPSwitcherApp: App {
                     Button(L("Ustawienia programu…")) { delegate.showSettings() }.keyboardShortcut(",")
                 }
                 CommandGroup(replacing: .appInfo) {
-                    Button(L("O PHP Switcher")) { delegate.showAbout() }
+                    Button(L("O DevŻbik")) { delegate.showAbout() }
                 }
                 CommandGroup(after: .appInfo) {
                     Button(L("Sprawdź aktualizacje aplikacji…")) { delegate.showUpdates() }

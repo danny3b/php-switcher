@@ -1,6 +1,8 @@
-# PHP Switcher
+# DevŻbik
 
 A small native macOS application for switching the PHP version used in Terminal and installing releases from the PHP 8.3, 8.4, and 8.5 branches.
+
+Previously named **PHP Switcher**. The app is displayed as **DevŻbik**; bundle, executable, and release filenames use **DevZbik**.
 
 Created by **danny3b**. Repository: [danny3b/php-switcher](https://github.com/danny3b/php-switcher).
 
@@ -15,7 +17,7 @@ The application bundles Sparkle for signed application updates. The build script
 
 ## Download and install
 
-Download `PHP-Switcher-<version>-arm64.dmg` from the [latest release](https://github.com/danny3b/php-switcher/releases/latest). Open the disk image, drag **PHP Switcher.app** onto **Applications**, eject the image, and launch the application from Applications. Quit an existing copy before replacing it. The DMG contains the application and an Applications folder shortcut; no package installer is required.
+New releases use `DevZbik-<version>-arm64.dmg`; older releases use `PHP-Switcher-<version>-arm64.dmg`. Download the DMG from the [latest release](https://github.com/danny3b/php-switcher/releases/latest). Open the disk image, drag **DevZbik.app** onto **Applications**, eject the image, and launch the application from Applications. Quit an existing copy before replacing it. The DMG contains the application and an Applications folder shortcut; no package installer is required.
 
 ## Build from source
 
@@ -25,7 +27,7 @@ cd php-switcher
 bash build.sh
 ```
 
-The output is `build/PHP Switcher.app`, signed locally with an ad hoc signature. Copy the application to `~/Applications` and open it. Run it from its final location before enabling launch at login.
+The output is `build/DevZbik.app`, signed locally with an ad hoc signature. Copy the application to `~/Applications` and open it. Run it from its final location before enabling launch at login.
 
 To create a DMG from that build, run `bash Scripts/create_dmg.sh`. The image and its SHA-256 checksum are written to `build/releases/<version>/`. The full release workflow creates and uploads the DMG alongside the signed ZIP used for automatic updates; see [Releasing](Docs/Releasing.md).
 
@@ -35,7 +37,7 @@ The bundled build script targets Apple Silicon. The current builds are ad hoc si
 
 Click **Use** to select a PHP version for subsequent `php` commands. You can also switch versions from the PHP menu in the macOS menu bar. **Install** downloads and builds the selected release. **Other version…** accepts an exact release number. Installing a release does not activate it automatically.
 
-The default list includes PHP Switcher installations, manually added installations, and the active PHP version. **Show other installations** also reveals PHP discovered in MAMP and Homebrew. **Add from disk…** accepts an installation directory or a `bin/php` executable. The sliders button opens that installation's configuration editor.
+The default list includes DevŻbik installations, manually added installations, and the active PHP version. **Show other installations** also reveals PHP discovered in MAMP and Homebrew. **Add from disk…** accepts an installation directory or a `bin/php` executable. The sliders button opens that installation's configuration editor.
 
 After the initial shell path setup, open a new Terminal window. If a terminal already uses `~/.local/php/current/bin`, switching applies to its next PHP invocation. Selecting a CLI version does not switch Apache, PHP-FPM, or MAMP to that version.
 
@@ -46,7 +48,7 @@ The labels in this README use the English interface. Choose **English** in the a
 The main window has **PHP versions**, **Settings**, and **About** tabs. Open settings with **⌘,**, the application menu, or the PHP menu in the menu bar.
 
 - **App language:** Polish, English, German, French, or Italian. If no valid language choice is saved, the first launch asks you to choose one. It suggests the first supported language in your macOS preferences, falling back to English, and saves it only after **Continue**. Previously saved choices remain unchanged without showing the prompt again. You can change the language later in Settings; changes are saved and applied immediately to the interface, PHP menu, configuration editor, and installer progress messages. GitHub advisory content, system errors, and external tool logs retain their source language.
-- **Launch at startup:** opens PHP Switcher when the user logs in to macOS. The app uses `SMAppService.mainApp` and reads its actual system status, including after returning from System Settings. If macOS requires approval, the app displays a separate message and a button to open Login Items settings. A failed registration is not presented as enabled. The app does not register itself at login by default.
+- **Launch at startup:** opens DevŻbik when the user logs in to macOS. The app uses `SMAppService.mainApp` and reads its actual system status, including after returning from System Settings. If macOS requires approval, the app displays a separate message and a button to open Login Items settings. A failed registration is not presented as enabled. The app does not register itself at login by default.
 - **About:** shows the application name, version and build number from the bundle, a short description, and the creator, **danny3b**.
 
 See Apple's [SMAppService documentation](https://developer.apple.com/documentation/servicemanagement/smappservice) for the login-item mechanism.
@@ -65,7 +67,7 @@ Version 1.6.0 is the first version with an updater; earlier versions need this v
 
 ## Removing PHP installations
 
-The **Trash** button next to a PHP Switcher installation moves the entire installation, including its `php.ini` and extensions, to macOS Trash. The confirmation shows the exact version and path, with **Cancel** as the default action. The installation list and security assessment refresh afterward.
+The **Trash** button next to a DevŻbik installation moves the entire installation, including its `php.ini` and extensions, to macOS Trash. The confirmation shows the exact version and path, with **Cancel** as the default action. The installation list and security assessment refresh afterward.
 
 - An active PHP installation cannot be removed. Select another version with **Use** first.
 - For manually added directories, the **minus** button only removes the list entry. Files stay on disk and can be added again with **Add from disk…**.
@@ -124,7 +126,7 @@ The installer was developed for an existing local Homebrew environment. A new Ma
 **PHP security** checks the official php.net release catalog and public advisories from the `php/php-src` GitHub repository. **Check now** forces a refresh. **Details** includes the automatic-check preference, per-installation results, CVE identifiers, and advisory links.
 
 - Automatic checks are enabled by default. They run at startup and every six hours while the app remains open, including after its window is closed to the menu bar. A result less than six hours old is reused. Wake events check whether a refresh is due; failed checks are retried after at least 15 minutes. Quitting the app stops checks.
-- The scope includes PHP Switcher installations, manually added installations, and active Terminal PHP. Other MAMP and Homebrew installations are excluded unless selected as active. Web server configuration is outside this scope.
+- The scope includes DevŻbik installations, manually added installations, and active Terminal PHP. Other MAMP and Homebrew installations are excluded unless selected as active. Web server configuration is outside this scope.
 - **Critical** comes from the PHP team's advisory severity, not merely the existence of a newer release. Comparisons stay within the relevant PHP branch and include earlier fixes even when the latest release contains only ordinary changes.
 - A critical fix produces a red message in the window and a warning indicator in the PHP menu. Users can open the advisory or install the latest PHP in the same branch. If that version is already installed, the app offers to activate it. Installation and switching require an explicit user action.
 - Offline sources, API limits, unknown data formats, and unsupported versions are not presented as confirmation that PHP is up to date. The last successful result remains visible with its timestamp and stale status. This is a version-and-advisory check, not an audit of linked libraries, PECL extensions, or vendor patches in custom builds. Each advisory describes its exploitation conditions.
@@ -138,14 +140,16 @@ Sources: [PHP release catalog](https://www.php.net/releases/?json), [PHP securit
 
 | Purpose | Location |
 | --- | --- |
-| Installed application | `~/Applications/PHP Switcher.app` |
-| Build output | `build/PHP Switcher.app` |
+| Installed application | `~/Applications/DevZbik.app` |
+| Build output | `build/DevZbik.app` |
 | PHP installations and active symbolic link | `~/.local/php` |
 | Manually added installation paths | `~/Library/Application Support/PHP Switcher/installations.json` |
 | Installer logs | `~/Library/Logs/PHP Switcher` |
 | Downloaded archives | `~/Library/Caches/PHP Switcher` |
 | Last complete security result | `~/Library/Caches/PHP Switcher/security.json` |
 | Shell PATH entry | `~/.zprofile` |
+
+The original `pl.daniel.php-switcher` bundle identifier, update feed, signing key, installation source identifiers, and data directories are retained so existing preferences and installations continue to work.
 
 An existing `.zprofile` is backed up as `.zprofile.php-switcher-*.bak` before modification. The `appLanguage` preference uses macOS user defaults.
 

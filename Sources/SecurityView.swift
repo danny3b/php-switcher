@@ -42,7 +42,7 @@ struct SecurityView: View {
                 Divider()
                 Toggle(L("Sprawdzaj automatycznie co 6 godzin"), isOn: $store.autoSecurity)
                     .toggleStyle(.checkbox).font(.system(size: 11))
-                Text(L("Sprawdzanie działa, gdy aplikacja jest uruchomiona, także w pasku menu. Zakres: wersje PHP Switcher, dodane ręcznie oraz aktywne PHP w terminalu."))
+                Text(L("Sprawdzanie działa, gdy aplikacja jest uruchomiona, także w pasku menu. Zakres: wersje DevŻbik, dodane ręcznie oraz aktywne PHP w terminalu."))
                     .font(.system(size: 10)).foregroundStyle(.secondary).fixedSize(horizontal: false, vertical: true)
                 if let snapshot = store.securitySnapshot, !snapshot.isFresh() || store.securityError != nil {
                     Text(L("Poniżej ostatni zapisany wynik — może nie uwzględniać nowych publikacji."))

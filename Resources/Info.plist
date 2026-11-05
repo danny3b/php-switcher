@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
 <plist version="1.0"><dict>
-<key>CFBundleName</key><string>PHP Switcher</string>
-<key>CFBundleDisplayName</key><string>PHP Switcher</string>
+<key>CFBundleName</key><string>DevŻbik</string>
+<key>CFBundleDisplayName</key><string>DevŻbik</string>
 <key>CFBundleIdentifier</key><string>pl.daniel.php-switcher</string>
-<key>CFBundleExecutable</key><string>PHPSwitcher</string>
+<key>CFBundleExecutable</key><string>DevZbik</string>
 <key>CFBundleIconFile</key><string>AppIcon</string>
 <key>CFBundlePackageType</key><string>APPL</string>
-<key>CFBundleShortVersionString</key><string>1.7.1</string>
-<key>CFBundleVersion</key><string>12</string>
+<key>CFBundleShortVersionString</key><string>1.7.2</string>
+<key>CFBundleVersion</key><string>13</string>
 <key>SUFeedURL</key><string>https://github.com/danny3b/php-switcher/releases/latest/download/appcast.xml</string>
 <key>SUPublicEDKey</key><string>Rnqu/dce3Jgjm5jMJkiaGngVdCtsFjy0J7EpiR02KIU=</string>
 <key>SUEnableAutomaticChecks</key><true/>

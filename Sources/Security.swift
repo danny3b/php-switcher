@@ -197,7 +197,7 @@ struct PHPSecurityClient {
             throw SwitcherError(message: L("Źródło odpowiedzi nie jest oficjalnym źródłem PHP."))
         }
         var request = URLRequest(url: url, cachePolicy: .reloadIgnoringLocalCacheData)
-        request.setValue("PHP-Switcher/1.1", forHTTPHeaderField: "User-Agent")
+        request.setValue("DevZbik/1.1", forHTTPHeaderField: "User-Agent")
         request.setValue("application/json", forHTTPHeaderField: "Accept")
         let (data, response) = try await session.data(for: request)
         guard let http = response as? HTTPURLResponse, http.statusCode == 200 else {

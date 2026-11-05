@@ -57,7 +57,9 @@ struct PHPInstallation: Identifiable, Equatable, Codable, Sendable {
     var id: String { root }
     let root: String
     let version: String
+    // Keep the source identifier stable for stored installations and removal checks.
     let source: String
+    var sourceName: String { source == "PHP Switcher" ? "DevŻbik" : L(source) }
     var url: URL { URL(fileURLWithPath: root) }
     var binary: URL { url.appendingPathComponent("bin/php") }
 }
@@ -270,7 +272,7 @@ final class PHPManager: Sendable {
             guard rootAttributes[.type] as? FileAttributeType == .typeDirectory,
                   Self.isValidVersion(installation.version),
                   candidate.path == expected.path, resolved.path == expected.path else {
-                throw SwitcherError(message: L("Ten katalog nie jest wersją zarządzaną przez PHP Switcher."))
+                throw SwitcherError(message: L("Ten katalog nie jest wersją zarządzaną przez DevŻbik."))
             }
             kind = .trash
         case "Dodane ręcznie":
@@ -473,7 +475,7 @@ final class PHPManager: Sendable {
         if fm.fileExists(atPath: file.path) {
             try fm.copyItem(at: file, to: home.appendingPathComponent(".zprofile.php-switcher-" + UUID().uuidString + ".bak"))
         }
-        try (text + "\n# PHP Switcher — PHP in Terminal\n" + desired + "\n").write(to: file, atomically: true, encoding: .utf8)
+        try (text + "\n# DevŻbik — PHP in Terminal\n" + desired + "\n").write(to: file, atomically: true, encoding: .utf8)
         if let permissions = attrs?[.posixPermissions] { try fm.setAttributes([.posixPermissions: permissions], ofItemAtPath: file.path) }
     }
 }

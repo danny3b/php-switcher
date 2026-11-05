@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Publish a prepared, signed PHP Switcher release using existing Git credentials.
+"""Publish a prepared, signed DevŻbik release using existing Git credentials.
 
 Authentication is kept in memory and passed to curl over stdin, never in process
 arguments, repository files, or logs. No GitHub CLI installation is required.
@@ -29,7 +29,7 @@ def verify_bundle_matches_archive(app, archive):
     with zipfile.ZipFile(archive) as package:
         expected_paths = set()
         for entry in package.infolist():
-            prefix = "PHP Switcher.app/"
+            prefix = app.name + "/"
             if not entry.filename.startswith(prefix) or entry.is_dir():
                 continue
             relative = entry.filename[len(prefix):]
@@ -58,7 +58,8 @@ def validate_dmg(image, archive):
             applications = mount / "Applications"
             if not applications.is_symlink() or os.readlink(applications) != "/Applications":
                 raise RuntimeError("The DMG is missing its Applications folder shortcut.")
-            app = mount / "PHP Switcher.app"
+            bundle_name = "PHP Switcher.app" if archive.name.startswith("PHP-Switcher-") else "DevZbik.app"
+            app = mount / bundle_name
             subprocess.run(["/usr/bin/codesign", "--verify", "--deep", "--strict", str(app)], check=True)
             verify_bundle_matches_archive(app, archive)
         finally:
@@ -94,7 +95,7 @@ class GitHub:
             "Authorization: Bearer " + self.token,
             "Accept: application/vnd.github+json",
             "X-GitHub-Api-Version: 2022-11-28",
-            "User-Agent: PHP-Switcher-Release",
+            "User-Agent: DevZbik-Release",
             "Content-Type: " + ("application/octet-stream" if asset else "application/json"),
         ]) + "\n"
         command = ["/usr/bin/curl", "--fail-with-body", "--silent", "--show-error", "--proto", "=https",
@@ -111,8 +112,8 @@ class GitHub:
 
 
 def validate_artifacts(directory, version, build, public_key):
-    archive = directory / f"PHP-Switcher-{version}-arm64.zip"
-    image = directory / f"PHP-Switcher-{version}-arm64.dmg"
+    archive = directory / f"DevZbik-{version}-arm64.zip"
+    image = directory / f"DevZbik-{version}-arm64.dmg"
     feed = directory / "appcast.xml"
     sums = directory / "SHA256SUMS"
     expected = {}
@@ -135,7 +136,7 @@ def validate_artifacts(directory, version, build, public_key):
     if not signature:
         raise RuntimeError("The archive has no EdDSA signature.")
     with zipfile.ZipFile(archive) as package:
-        metadata = plistlib.loads(package.read("PHP Switcher.app/Contents/Info.plist"))
+        metadata = plistlib.loads(package.read("DevZbik.app/Contents/Info.plist"))
     if (metadata.get("CFBundleIdentifier") != "pl.daniel.php-switcher"
             or metadata.get("CFBundleVersion") != str(build)
             or metadata.get("CFBundleShortVersionString") != version
@@ -159,7 +160,9 @@ def add_dmg_to_release(directory, version):
     if release["draft"]:
         raise RuntimeError("Use --add-dmg only for an already published release.")
     existing = {asset["name"]: asset for asset in release["assets"]}
-    archive = directory / f"PHP-Switcher-{version}-arm64.zip"
+    archive = directory / f"DevZbik-{version}-arm64.zip"
+    if archive.name not in existing:
+        archive = directory / f"PHP-Switcher-{version}-arm64.zip"
     image = archive.with_suffix(".dmg")
     checksum = image.with_suffix(".dmg.sha256")
     if image.name in existing or checksum.name in existing:
@@ -208,7 +211,7 @@ def main():
     if any(release["tag_name"] == "v" + version for release in releases):
         raise RuntimeError("This release already exists. Do not overwrite published update artifacts.")
     release = api.request("POST", "/releases", {
-        "tag_name": "v" + version, "target_commitish": revision, "name": "PHP Switcher " + version,
+        "tag_name": "v" + version, "target_commitish": revision, "name": "DevŻbik " + version,
         "body": args.notes.read_text(), "draft": True, "prerelease": False,
     })
     release_id = release["id"]

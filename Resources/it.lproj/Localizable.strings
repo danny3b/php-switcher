@@ -1,4 +1,4 @@
-// PHP Switcher UI translations. Preserve numbered placeholders.
+// DevŻbik UI translations. Preserve numbered placeholders.
 " · aktywne" = " · attivo";
 "AKTYWNE W TERMINALU" = "ATTIVO IN TERMINALE";
 "API PHP zwróciło nieprawidłową wersję dla serii {0}." = "L’API PHP ha restituito una versione non valida per il ramo {0}.";
@@ -13,7 +13,7 @@
 "Automatycznie pobieraj nowe wersje" = "Scarica automaticamente le nuove versioni";
 "Autostart czeka na zgodę w Ustawieniach systemowych macOS." = "L’avvio all’accesso richiede l’autorizzazione nelle Impostazioni di Sistema di macOS.";
 "Bezpieczeństwo PHP" = "Sicurezza PHP";
-"Brak bazowego PHP i bibliotek do kompilacji. Wymagane jest PHP z Homebrew lub wcześniejsza instalacja PHP Switcher." = "Mancano il PHP di base e le librerie di compilazione. È necessario PHP di Homebrew o una precedente installazione di PHP Switcher.";
+"Brak bazowego PHP i bibliotek do kompilacji. Wymagane jest PHP z Homebrew lub wcześniejsza instalacja DevŻbik." = "Mancano il PHP di base e le librerie di compilazione. È necessario PHP di Homebrew o una precedente installazione di DevŻbik.";
 "Brak listy wspieranych serii w odpowiedzi PHP." = "La risposta PHP non contiene l’elenco dei rami supportati.";
 "Brak nowszych poprawek bezpieczeństwa" = "Nessuna correzione di sicurezza più recente";
 "Brak nowszych poprawek w sprawdzonych źródłach" = "Nessuna correzione più recente nelle fonti verificate";
@@ -32,7 +32,7 @@
 "Dodaj instalację PHP" = "Aggiungi installazione PHP";
 "Dodaj z dysku…" = "Aggiungi dal disco…";
 "Dodane ręcznie" = "Aggiunta manualmente";
-"Dostosuj PHP Switcher do siebie." = "Personalizza PHP Switcher.";
+"Dostosuj DevŻbik do siebie." = "Personalizza DevŻbik.";
 "Dostępna nowsza wersja" = "Versione più recente disponibile";
 "Dostępna wersja {0}" = "È disponibile la versione {0}";
 "Dostępne krytyczne poprawki PHP" = "Correzioni PHP critiche disponibili";
@@ -106,7 +106,7 @@
 "Np. 256M lub 1G; -1 oznacza brak limitu." = "Ad esempio 256M o 1G; -1 significa illimitato.";
 "Np. 32M, 128M lub 1G." = "Ad esempio 32M, 128M o 1G.";
 "Np. Europe/Warsaw lub UTC." = "Ad esempio Europe/Rome o UTC.";
-"O PHP Switcher" = "Informazioni su PHP Switcher";
+"O DevŻbik" = "Informazioni su DevŻbik";
 "O programie" = "Informazioni";
 "Ocena według numeru PHP i komunikatów projektu; nie jest audytem bibliotek ani rozszerzeń PECL. Warunki podatności opisano w komunikacie." = "Basato sui numeri di versione PHP e sugli avvisi del progetto; non è un controllo delle librerie o delle estensioni PECL. Consulta ogni avviso per le condizioni della vulnerabilità.";
 "Odinstalować PHP {0} przez Homebrew?" = "Disinstallare PHP {0} tramite Homebrew?";
@@ -120,11 +120,11 @@
 "Oficjalne źródła PHP" = "Sorgenti PHP ufficiali";
 "Ostatni udany odczyt: " = "Ultima verifica riuscita: ";
 "Ostatnie sprawdzenie: {0}" = "Ultima verifica: {0}";
-"Otwieraj PHP Switcher automatycznie po zalogowaniu do macOS." = "Apri automaticamente PHP Switcher all’accesso a macOS.";
-"Otwórz PHP Switcher…" = "Apri PHP Switcher…";
+"Otwieraj DevŻbik automatycznie po zalogowaniu do macOS." = "Apri automaticamente DevŻbik all’accesso a macOS.";
+"Otwórz DevŻbik…" = "Apri DevŻbik…";
 "Otwórz ustawienia logowania" = "Apri le impostazioni degli elementi di login";
-"PHP Switcher jest aktualny." = "PHP Switcher è aggiornato.";
-"PHP Switcher — aktywna wersja w terminalu" = "PHP Switcher — versione attiva in Terminale";
+"DevŻbik jest aktualny." = "DevŻbik è aggiornato.";
+"DevŻbik — aktywna wersja w terminalu" = "DevŻbik — versione attiva in Terminale";
 "PHP ma błąd konfiguracji rozszerzeń. {0}" = "PHP presenta un errore nella configurazione delle estensioni. {0}";
 "PHP nadpisuje lub odrzuca ustawienie {0}. Sprawdź dodatkowe limity konfiguracji." = "PHP sovrascrive o rifiuta l’impostazione {0}. Verifica gli ulteriori limiti della configurazione.";
 "PHP nie wczytało konfiguracji poprawnie. " = "PHP non ha caricato correttamente la configurazione. ";
@@ -180,7 +180,7 @@
 "Sprawdzaj automatycznie co 6 godzin" = "Verifica automaticamente ogni 6 ore";
 "Sprawdzaj przy uruchomieniu i co 6 godzin" = "Verifica all’avvio e ogni 6 ore";
 "Sprawdzanie aktualizacji aplikacji…" = "Ricerca di aggiornamenti dell’app…";
-"Sprawdzanie działa, gdy aplikacja jest uruchomiona, także w pasku menu. Zakres: wersje PHP Switcher, dodane ręcznie oraz aktywne PHP w terminalu." = "Le verifiche vengono eseguite mentre l’app è aperta, anche nella barra dei menu. Ambito: installazioni PHP Switcher, installazioni aggiunte manualmente e PHP attivo in Terminale.";
+"Sprawdzanie działa, gdy aplikacja jest uruchomiona, także w pasku menu. Zakres: wersje DevŻbik, dodane ręcznie oraz aktywne PHP w terminalu." = "Le verifiche vengono eseguite mentre l’app è aperta, anche nella barra dei menu. Ambito: installazioni DevŻbik, installazioni aggiunte manualmente e PHP attivo in Terminale.";
 "Sprawdzanie możliwości usunięcia PHP {0}…" = "Verifica della possibilità di rimuovere PHP {0}…";
 "Sprawdzanie narzędzi i bibliotek…" = "Verifica degli strumenti e delle librerie…";
 "Sprawdzanie poprawek PHP…" = "Verifica delle correzioni PHP…";
@@ -201,7 +201,7 @@
 "Ta wersja PHP nie ma zarejestrowanej usługi PHP-FPM. Możesz przejść do usuwania przyciskiem Kosza." = "Questa versione PHP non ha un servizio PHP-FPM registrato. Usa il pulsante Cestino per procedere alla rimozione.";
 "Ta wersja została właśnie aktywowana. Najpierw wybierz inne PHP." = "Questa versione è stata appena attivata. Seleziona prima un’altra versione PHP.";
 "Tej instalacji nie ma już na liście dodanych katalogów. Odśwież listę." = "Questa installazione non è più nell’elenco delle cartelle aggiunte. Aggiorna l’elenco.";
-"Ten katalog nie jest wersją zarządzaną przez PHP Switcher." = "Questa cartella non è una versione gestita da PHP Switcher.";
+"Ten katalog nie jest wersją zarządzaną przez DevŻbik." = "Questa cartella non è una versione gestita da DevŻbik.";
 "Ten katalog wersji już istnieje. Użyj Odśwież, aby ją wybrać." = "La cartella di questa versione esiste già. Usa «Aggiorna» per selezionarla.";
 "Ten sam plik .ini jest wczytywany więcej niż raz. Uporządkuj konfigurację przed edycją." = "Lo stesso file .ini viene caricato più volte. Correggi la configurazione prima di modificarla.";
 "To jest aktywne PHP. Najpierw wybierz inną wersję przyciskiem Użyj." = "Questo è il PHP attivo. Seleziona prima un’altra versione con «Usa».";

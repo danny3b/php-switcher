@@ -1,6 +1,8 @@
-# Releasing PHP Switcher
+# Releasing DevŻbik
 
 Application updates use [Sparkle 2](https://sparkle-project.org/documentation/) and public GitHub Releases in `danny3b/php-switcher`. The application reads the latest stable release's `appcast.xml`, which points to a versioned ZIP asset. Each release also includes a DMG for manual installation by dragging the application into Applications. Keep the repository and release assets public so clients can download without credentials.
+
+New builds use `DevZbik.app`, the `DevZbik` executable, and `DevZbik-<version>-arm64` archive names. The display name is **DevŻbik**. Preserve the existing bundle identifier, update feed URL, signing key account, and increasing build numbers when releasing the renamed application. Historical PHP Switcher release assets keep their original names.
 
 ## Signing key
 
@@ -18,13 +20,13 @@ The packaging script checks that the existing Keychain key matches the public ke
    bash Scripts/prepare_release.sh
    ```
 
-   Output is in `build/releases/<version>/`: `PHP-Switcher-<version>-arm64.zip`, `PHP-Switcher-<version>-arm64.dmg`, `appcast.xml`, `SHA256SUMS`, a standalone DMG checksum, and a local `SOURCE_REVISION` marker. These files are ignored by Git. Do not edit the signed feed. Re-run preparation after any source changes. The appcast generator receives only the ZIP, so the DMG cannot become a duplicate update entry.
+   Output is in `build/releases/<version>/`: `DevZbik-<version>-arm64.zip`, `DevZbik-<version>-arm64.dmg`, `appcast.xml`, `SHA256SUMS`, a standalone DMG checksum, and a local `SOURCE_REVISION` marker. These files are ignored by Git. Do not edit the signed feed. Re-run preparation after any source changes. The appcast generator receives only the ZIP, so the DMG cannot become a duplicate update entry.
 
 4. Push the source commit, then publish:
 
    ```sh
    git push origin main
-   python3 Scripts/publish_release.py --notes Docs/ReleaseNotes-1.7.1.md --publish
+   python3 Scripts/publish_release.py --notes Docs/ReleaseNotes-1.7.2.md --publish
    ```
 
    Substitute the current release-notes path. The publisher uses the existing Git credential helper; no GitHub CLI or embedded token is needed. It requires a clean working tree, a matching remote `main`, matching packaged source revision, valid signatures, matching archive metadata, and matching checksums. It mounts the DMG read-only, checks the application signature and Applications shortcut, and compares every application file and symbolic link with the ZIP. It first creates a draft, uploads and verifies the ZIP, DMG, appcast, and combined checksums, then publishes it as the latest stable release. Omitting `--publish` leaves a draft.

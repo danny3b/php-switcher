@@ -20,10 +20,10 @@ if [ "$PUBLIC_KEY" != "$EXPECTED_KEY" ]; then
   exit 1
 fi
 bash build.sh
-APP="$PWD/build/PHP Switcher.app"
+APP="$PWD/build/DevZbik.app"
 RELEASE_DIR="$PWD/build/releases/$VERSION"
 mkdir -p "$RELEASE_DIR"
-ARCHIVE="$RELEASE_DIR/PHP-Switcher-$VERSION-arm64.zip"
+ARCHIVE="$RELEASE_DIR/DevZbik-$VERSION-arm64.zip"
 /usr/bin/codesign --verify --deep --strict "$APP"
 /usr/bin/ditto -c -k --sequesterRsrc --keepParent "$APP" "$ARCHIVE"
 # Generate from the ZIP only; the manual installer must not become a second
@@ -37,11 +37,11 @@ cp "$ARCHIVE" "$FEED_DIR/"
   --maximum-deltas 0 "$FEED_DIR"
 mv "$FEED_DIR/appcast.xml" "$RELEASE_DIR/appcast.xml"
 "$SPARKLE_ROOT/bin/sign_update" --account pl.daniel.php-switcher "$RELEASE_DIR/appcast.xml"
-bash Scripts/create_dmg.sh "$APP" "$RELEASE_DIR/PHP-Switcher-$VERSION-arm64.dmg"
+bash Scripts/create_dmg.sh "$APP" "$RELEASE_DIR/DevZbik-$VERSION-arm64.dmg"
 if [ "$REVISION" != "$(git rev-parse HEAD)" ] || [ -n "$(git status --porcelain)" ]; then
   echo 'Source changed during packaging. Prepare the release again.' >&2
   exit 1
 fi
 printf '%s\n' "$REVISION" > "$RELEASE_DIR/SOURCE_REVISION"
-(cd "$RELEASE_DIR" && shasum -a 256 "PHP-Switcher-$VERSION-arm64.zip" "PHP-Switcher-$VERSION-arm64.dmg" appcast.xml > SHA256SUMS)
+(cd "$RELEASE_DIR" && shasum -a 256 "DevZbik-$VERSION-arm64.zip" "DevZbik-$VERSION-arm64.dmg" appcast.xml > SHA256SUMS)
 printf 'Prepared release %s (build %s): %s\n' "$VERSION" "$BUILD_NUMBER" "$RELEASE_DIR"

@@ -17,18 +17,18 @@ class ReleaseTests(unittest.TestCase):
         self.temporary = tempfile.TemporaryDirectory()
         self.addCleanup(self.temporary.cleanup)
         self.root = Path(self.temporary.name)
-        self.app = self.root / "PHP Switcher.app"
+        self.app = self.root / "DevZbik.app"
         (self.app / "Contents").mkdir(parents=True)
         (self.app / "Contents/program").write_bytes(b"original app")
         (self.app / "Current").symlink_to("Contents")
         self.archive = self.root / "app.zip"
         with zipfile.ZipFile(self.archive, "w") as package:
-            package.writestr("PHP Switcher.app/Contents/program", b"original app")
-            link = zipfile.ZipInfo("PHP Switcher.app/Current")
+            package.writestr("DevZbik.app/Contents/program", b"original app")
+            link = zipfile.ZipInfo("DevZbik.app/Current")
             link.create_system = 3
             link.external_attr = (stat.S_IFLNK | 0o777) << 16
             package.writestr(link, "Contents")
-            package.writestr("__MACOSX/._PHP Switcher.app", b"metadata")
+            package.writestr("__MACOSX/._DevZbik.app", b"metadata")
 
     def test_matching_app_and_framework_links_are_accepted(self):
         release.verify_bundle_matches_archive(self.app, self.archive)

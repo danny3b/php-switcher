@@ -14,7 +14,7 @@ struct AppUpdateView: View {
         case .extracting: return L("Weryfikowanie i przygotowywanie aktualizacji…")
         case .ready: return L("Wersja {0} jest gotowa do instalacji.", updates.version ?? "")
         case .installing: return L("Instalowanie aktualizacji aplikacji…")
-        case .upToDate: return L("PHP Switcher jest aktualny.")
+        case .upToDate: return L("DevŻbik jest aktualny.")
         case .failed: return L("Nie udało się sprawdzić lub pobrać aktualizacji.")
         }
     }

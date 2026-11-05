@@ -20,14 +20,14 @@ import Darwin
         check(rewritten.contains("upload_max_filesize = 2M ; old default") && rewritten.contains("upload_max_filesize = 1M"), "Preserves earlier duplicates and conditional values")
         check(rewritten.contains("date.timezone = \"Europe/Warsaw\""), "Timezone serialized as a quoted value")
         let appended = try PHPIniDocument("[HOST=example.test]\nmemory_limit=64M\n").updating(["memory_limit": "512M"])
-        check(appended.hasPrefix("; PHP Switcher") && PHPIniDocument(appended).assignments["memory_limit"]?.value == "512M", "Missing global key is inserted outside conditional sections")
+        check(appended.hasPrefix("; DevŻbik") && PHPIniDocument(appended).assignments["memory_limit"]?.value == "512M", "Missing global key is inserted outside conditional sections")
         let quoted = PHPIniDocument("extension=\"first\nmax_input_vars=9999\nlast\"\nmax_input_vars=1000\n")
         check(quoted.assignments["max_input_vars"]?.value == "1000", "Assignment-like text in multiline quotes is ignored")
         rejected("Multiline field value cannot be rewritten ambiguously") {
             _ = try PHPIniDocument("memory_limit=\"128\nM\"\n").updating(["memory_limit": "256M"])
         }
         let bom = try PHPIniDocument("\u{feff}; preserved\n").updating(["max_input_vars": "2000"])
-        check(bom.hasPrefix("\u{feff}; PHP Switcher") && bom.components(separatedBy: "\u{feff}").count == 2, "BOM remains at the beginning")
+        check(bom.hasPrefix("\u{feff}; DevŻbik") && bom.components(separatedBy: "\u{feff}").count == 2, "BOM remains at the beginning")
         check(PHPIniField.bytes("1G") == 1073741824 && PHPIniField.memory.equivalent("1G", "1024M"), "Memory units compare by size")
         rejected("Overflowing memory size rejected") { _ = try PHPIniField.memory.validated("9999999999999999999G", timezones: []) }
         rejected("Injected ini directives rejected") { _ = try PHPIniField.upload.validated("2M\nextension=evil.so", timezones: []) }
