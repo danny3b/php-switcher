@@ -1,6 +1,6 @@
 # DevŻbik
 
-A small native macOS application for switching the PHP version used in Terminal and installing releases from the PHP 8.3, 8.4, and 8.5 branches.
+A small native macOS application for managing PHP in Terminal and replacing local MySQL databases from SQL exports. It also installs releases from the PHP 8.3, 8.4, and 8.5 branches.
 
 Previously named **PHP Switcher**. The app is displayed as **DevŻbik**; bundle, executable, and release filenames use **DevZbik**.
 
@@ -45,7 +45,7 @@ The labels in this README use the English interface. Choose **English** in the a
 
 ## App settings and languages
 
-The main window has **PHP versions**, **Settings**, and **About** tabs. Open settings with **⌘,**, the application menu, or the PHP menu in the menu bar.
+The main window has **PHP versions**, **Databases**, **Settings**, and **About** tabs. Open settings with **⌘,**, the application menu, or the PHP menu in the menu bar.
 
 - **App language:** Polish, English, German, French, or Italian. If no valid language choice is saved, the first launch asks you to choose one. It suggests the first supported language in your macOS preferences, falling back to English, and saves it only after **Continue**. Previously saved choices remain unchanged without showing the prompt again. You can change the language later in Settings; changes are saved and applied immediately to the interface, PHP menu, configuration editor, and installer progress messages. GitHub advisory content, system errors, and external tool logs retain their source language.
 - **Launch at startup:** opens DevŻbik when the user logs in to macOS. The app uses `SMAppService.mainApp` and reads its actual system status, including after returning from System Settings. If macOS requires approval, the app displays a separate message and a button to open Login Items settings. A failed registration is not presented as enabled. The app does not register itself at login by default.
@@ -64,6 +64,20 @@ Open **Settings → App updates** to check manually, change automatic checks or 
 - Updates come from the public [GitHub Releases page](https://github.com/danny3b/php-switcher/releases). No GitHub token is stored in the application. Checks do not upload PHP installation paths or project files, and Sparkle system-profile reporting is disabled.
 
 Version 1.6.0 is the first version with an updater; earlier versions need this version installed manually once. A source commit alone does not publish an application update: maintainers must publish a signed release with its ZIP archive and `appcast.xml`. See [Releasing](Docs/Releasing.md).
+
+## Replacing a local MySQL database
+
+Open **Databases**, enter the MySQL port, user, and password, then choose **Connect and load databases**. Connections always use TCP to `127.0.0.1`; there is no remote-host setting. MAMP's MySQL clients are detected automatically, followed by common Homebrew locations. The suggested port is `8889` for MAMP and `3306` otherwise. **Choose…** selects another `mysql` executable. MySQL 5.7 and 8.x clients are supported; backups also need the adjacent `mysqldump` executable.
+
+Select the local database and an uncompressed `.sql` file, choose **Replace database…**, and type the exact database name to confirm **Clear and import**. Stop the local website and other writers while replacing the database. The operation drops and recreates only the selected database, preserving its default character set and collation, then imports the file. System databases are excluded. The connected server identity and database existence are checked again before clearing. A shared per-database lock prevents concurrent replacements from separate app instances.
+
+**Back up the current database before clearing** is enabled by default. A failed backup prevents clearing. Completed backups are kept in `~/Library/Application Support/PHP Switcher/database-backups/`; **Show backup** reveals the file. Backups include the original schema, data, views, routines, and triggers. Restore a backup containing these advanced objects with the MySQL client; the app's first import version accepts table/data dumps only. Backups are retained until you remove them.
+
+Use a trusted UTF-8 table/data export from `mysqldump` or phpMyAdmin. For example, `mysqldump --no-tablespaces --loose-column-statistics=0 --set-gtid-purged=OFF database_name > export.sql` creates a suitable export if the database has no triggers. The app snapshots and validates the entire file before clearing. A single source database's `CREATE DATABASE`, `DROP DATABASE`, and `USE` headers are omitted so that the selected local name can differ from the export's name. Multiple source databases, explicit database-qualified object names, views, routines, triggers, events, client commands, server-setting changes, and nonstandard quoting modes are rejected before clearing. The validator checks the supported dump structure, not every SQL expression or server-specific feature; MySQL can still report syntax, compatibility, or permission errors during import.
+
+Clearing and importing is **not transactional**. If an import fails or is cancelled after clearing begins, the selected database may be empty or incomplete. The app reports this and keeps a completed backup for recovery; it does not claim to roll back. Progress follows bytes read and completes only when the MySQL client exits successfully. Application quit and update installation are blocked while a database operation runs. Cancel from the Databases tab when necessary.
+
+The password is retained in app memory only for the session and is never saved in preferences or placed in process arguments. The helper receives it over stdin and uses a temporary option file with mode `0600` in a private directory, removed when the operation ends. Existing MySQL option and login-path files are isolated from these operations. The client runs in binary batch mode with local file loading and reconnect disabled. See MySQL's [client options](https://dev.mysql.com/doc/refman/8.4/en/mysql-command-options.html) and [option-file handling](https://dev.mysql.com/doc/refman/8.0/en/option-files.html).
 
 ## Removing PHP installations
 
@@ -147,6 +161,7 @@ Sources: [PHP release catalog](https://www.php.net/releases/?json), [PHP securit
 | Installer logs | `~/Library/Logs/PHP Switcher` |
 | Downloaded archives | `~/Library/Caches/PHP Switcher` |
 | Last complete security result | `~/Library/Caches/PHP Switcher/security.json` |
+| MySQL database backups | `~/Library/Application Support/PHP Switcher/database-backups` |
 | Shell PATH entry | `~/.zprofile` |
 
 The original `pl.daniel.php-switcher` bundle identifier, update feed, signing key, installation source identifiers, and data directories are retained so existing preferences and installations continue to work.
@@ -170,9 +185,12 @@ Use English by default for documentation, development instructions, code comment
 | `Sources/LanguageSelectionView.swift` | First-launch language selection and confirmation |
 | `Sources/AppUpdates.swift` | Sparkle scheduling, download state, and explicit installation |
 | `Sources/AppUpdateView.swift` | Application update controls and progress |
+| `Sources/Databases.swift` | Local MySQL connection preferences and background operation state |
+| `Sources/DatabasesView.swift` | Database selection, SQL file selection, and replacement confirmation |
 | `Sources/Localization.swift` | Language selection and string interpolation |
 | `Resources/{en,de,fr,it}.lproj/Localizable.strings` | English, German, French, and Italian UI translations |
 | `Resources/install_php.py` | PHP source installer |
+| `Resources/import_database.py` | Local MySQL discovery, dump validation, backup, clearing, and import |
 
 The existing localization system uses Polish source strings as fallback keys. `{0}`, `{1}`, and subsequent numbered placeholders represent arguments that translations may reorder. Installation source identifiers and configuration category identifiers remain independent of the selected language. English documentation conventions do not change saved application language preferences.
 
@@ -216,6 +234,8 @@ Tests use isolated temporary directories and do not switch the user's real PHP i
 
 App update tests cover automatic and manual downloads, progress, persistence, explicit installation, restart blocking, cancellation before normal quit, and offline/incompatible-release handling. Release publishing validates archive metadata, checksums, signatures, and the source revision before uploading assets.
 
+Database unit tests use temporary files and simulated clients. They cover SQL strings and executable comments, source database headers, rejection before clearing, backup failures, server changes, failed imports, password handling, and cancellation. They never connect to an existing MySQL server.
+
 Navigation tests use fixture installations and count security evaluations to ensure tab changes never rerun advisory analysis. They also verify invalidation on changed versions, sources, active installations, removals, and new advisory data. The `TESTING` flag replaces only the app entry point with the test runner; it does not change the store's implementation.
 
 `Tests/Fixtures` contains selected fields from official responses retrieved on October 22, 2026, without advisory descriptions.
@@ -243,4 +263,8 @@ build/configuration-tests --php "$HOME/.local/php/current/bin/php"
 
 # Contact the real release and advisory sources.
 build/security-tests --live
+
+# Initialize and remove a disposable MySQL 8 server in a private temporary directory.
+# This does not connect to the existing MAMP server or touch its databases.
+python3 Tests/DatabaseIntegration.py --mysql-bin /Applications/MAMP/Library/bin/mysql80/bin --run
 ```

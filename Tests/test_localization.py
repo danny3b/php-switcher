@@ -1,5 +1,6 @@
 """Check complete locale coverage and safe interpolation in shipped catalogs."""
 from collections import Counter
+import ast
 import json
 from pathlib import Path
 import plistlib
@@ -36,6 +37,16 @@ class LocalizationTests(unittest.TestCase):
                 # JSON and Swift share the escapes used by these source strings.
                 key = json.loads('"' + value + '"')
                 self.assertIn(key, keys, f"{source.name}: {key}")
+
+    def test_database_helper_messages_have_catalog_entries(self):
+        keys = catalog(ROOT / "Resources/en.lproj/Localizable.strings")
+        tree = ast.parse((ROOT / "Resources/import_database.py").read_text())
+        for node in ast.walk(tree):
+            if not isinstance(node, ast.Call) or not node.args:
+                continue
+            name = node.func.id if isinstance(node.func, ast.Name) else getattr(node.func, "attr", "")
+            if name in {"DatabaseError", "update"} and isinstance(node.args[0], ast.Constant):
+                self.assertIn(node.args[0].value, keys)
 
 
 if __name__ == "__main__":

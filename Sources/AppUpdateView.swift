@@ -50,7 +50,7 @@ struct AppUpdateView: View {
                 Button(L("Zainstaluj i uruchom ponownie")) { updates.installAndRestart() }
                     .buttonStyle(.borderedProminent).disabled(!store.canRestartForUpdate)
                 if !store.canRestartForUpdate {
-                    Text(L("Zakończ bieżącą operację PHP i zapisz lub zamknij edytor ustawień przed aktualizacją."))
+                    Text(L("Zakończ bieżącą operację i zapisz lub zamknij edytor ustawień przed aktualizacją."))
                         .font(.system(size: 11)).foregroundStyle(.secondary)
                 }
             }

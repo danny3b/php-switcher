@@ -42,8 +42,8 @@ import Combine
             }
         }
         let elapsed = Date().timeIntervalSince(began) * 1000
-        check(evaluations == before, "300 tab changes and status reads do not rerun security analysis")
-        print(String(format: "300 tab selections and status reads: %.3f ms (checksum %d)", elapsed, checksum))
+        check(evaluations == before, "Tab changes and status reads do not rerun security analysis")
+        print(String(format: "%d tab selections and status reads: %.3f ms (checksum %d)", AppTab.allCases.count * 100, elapsed, checksum))
         store.installations = [fixed, manual, external]
         check(evaluations == before, "Refreshing an unchanged installation list reuses findings")
         store.activeRoot = external.root

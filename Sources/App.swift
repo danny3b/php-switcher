@@ -119,7 +119,7 @@ struct InstallProgress: Decodable {
     var logHandle: FileHandle?
     var jobStatus = ""
     var hasInstallerProgress = false
-    var canRestartForUpdate: Bool { !AppPreferences.shared.needsLanguageSelection && !loading && !working && installing == nil && configuration == nil }
+    var canRestartForUpdate: Bool { !AppPreferences.shared.needsLanguageSelection && !loading && !working && installing == nil && configuration == nil && !DatabaseStore.shared.isBusy }
     var busy: Bool { !canRestartForUpdate || AppUpdates.shared.phase == .installing }
     var active: PHPInstallation? { installations.first { $0.root == activeRoot } }
     var missing: [String] { suggested.filter { version in !installations.contains { $0.version == version } } }
@@ -590,6 +590,7 @@ struct SwitcherView: View {
     var subscription: AnyCancellable?
     var preferencesSubscription: AnyCancellable?
     var updateSubscription: AnyCancellable?
+    var databaseSubscription: AnyCancellable?
     var wakeObserver: NSObjectProtocol?
 
     func applicationDidFinishLaunching(_ notification: Notification) {
@@ -607,6 +608,9 @@ struct SwitcherView: View {
             DispatchQueue.main.async { self?.updateMenu(); SwitcherStore.shared.objectWillChange.send() }
         }
         AppUpdates.shared.canInstall = { SwitcherStore.shared.canRestartForUpdate }
+        databaseSubscription = DatabaseStore.shared.objectWillChange.sink { [weak self] _ in
+            DispatchQueue.main.async { self?.updateMenu(); SwitcherStore.shared.objectWillChange.send() }
+        }
         AppUpdates.shared.revealSettings = { [weak self] in self?.showSettings() }
         AppUpdates.shared.start()
         updateMenu()
@@ -686,6 +690,14 @@ struct SwitcherView: View {
     @objc func quitApp() { NSApp.terminate(nil) }
     func applicationShouldTerminateAfterLastWindowClosed(_ sender: NSApplication) -> Bool { false }
     func applicationShouldTerminate(_ sender: NSApplication) -> NSApplication.TerminateReply {
+        if DatabaseStore.shared.isBusy {
+            SwitcherStore.shared.selectTab(.databases); showWindow()
+            let alert = NSAlert()
+            alert.messageText = L("Trwa operacja bazy danych")
+            alert.informativeText = L("Poczekaj na zakończenie albo anuluj operację w zakładce Bazy danych przed zamknięciem aplikacji.")
+            alert.addButton(withTitle: "OK"); alert.runModal()
+            return .terminateCancel
+        }
         if SwitcherStore.shared.working { return .terminateCancel }
         if let editor = SwitcherStore.shared.configuration, !editor.canClose() { return .terminateCancel }
         if SwitcherStore.shared.installing != nil {

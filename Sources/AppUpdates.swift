@@ -77,7 +77,7 @@ enum AppUpdatePhase: Equatable {
     func installAndRestart() {
         guard phase == .ready || (phase == .installing && retryTermination != nil) else { return }
         guard canInstall() else {
-            error = L("Zakończ bieżącą operację PHP i zapisz lub zamknij edytor ustawień przed aktualizacją.")
+            error = L("Zakończ bieżącą operację i zapisz lub zamknij edytor ustawień przed aktualizacją.")
             return
         }
         error = nil; installRequested = true; phase = .installing

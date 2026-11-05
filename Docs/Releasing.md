@@ -26,7 +26,7 @@ The packaging script checks that the existing Keychain key matches the public ke
 
    ```sh
    git push origin main
-   python3 Scripts/publish_release.py --notes Docs/ReleaseNotes-1.7.2.md --publish
+   python3 Scripts/publish_release.py --notes Docs/ReleaseNotes-1.8.0.md --publish
    ```
 
    Substitute the current release-notes path. The publisher uses the existing Git credential helper; no GitHub CLI or embedded token is needed. It requires a clean working tree, a matching remote `main`, matching packaged source revision, valid signatures, matching archive metadata, and matching checksums. It mounts the DMG read-only, checks the application signature and Applications shortcut, and compares every application file and symbolic link with the ZIP. It first creates a draft, uploads and verifies the ZIP, DMG, appcast, and combined checksums, then publishes it as the latest stable release. Omitting `--publish` leaves a draft.

@@ -2,11 +2,12 @@ import SwiftUI
 import ServiceManagement
 
 enum AppTab: String, CaseIterable, Identifiable {
-    case versions, settings, about
+    case versions, databases, settings, about
     var id: String { rawValue }
     var title: String {
         switch self {
         case .versions: return L("Wersje PHP")
+        case .databases: return L("Bazy danych")
         case .settings: return L("Ustawienia")
         case .about: return L("O programie")
         }
@@ -27,6 +28,7 @@ struct MainView: View {
             .padding(.horizontal, 28).padding(.top, 18).padding(.bottom, 8)
             switch store.selectedTab {
             case .versions: SwitcherView()
+            case .databases: DatabasesView()
             case .settings: AppSettingsView(preferences: preferences)
             case .about: AboutView()
             }
@@ -102,7 +104,7 @@ struct AboutView: View {
                 Text("DevŻbik").font(.system(size: 30, weight: .bold, design: .rounded))
                 Text(L("Wersja {0} ({1})", version, build)).font(.system(size: 12)).foregroundStyle(.secondary)
             }
-            Text(L("Natywna aplikacja macOS do zarządzania wersjami PHP w terminalu, instalowania wydań i edycji konfiguracji php.ini."))
+            Text(L("Natywna aplikacja macOS do zarządzania PHP i odświeżania lokalnych baz MySQL."))
                 .multilineTextAlignment(.center).foregroundStyle(.secondary).frame(maxWidth: 460)
             VStack(spacing: 8) {
                 Text(L("Twórca programu")).font(.system(size: 12)).foregroundStyle(.secondary)
